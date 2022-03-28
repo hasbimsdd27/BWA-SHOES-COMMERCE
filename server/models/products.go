@@ -13,6 +13,7 @@ type Products struct {
 	Description string            `json:"description" gorm:"type:text"`
 	Tags        string            `json:"tags"`
 	CategoryId  int               `json:"category_id"`
+	Galeries    []ProductGaleries `gorm:"foreignKey:ProductId"`
 	Category    ProductCategories `gorm:"foreignKey:CategoryId"`
 	CreatedAt   time.Time
 	UpdatedAt   time.Time

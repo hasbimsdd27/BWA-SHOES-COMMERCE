@@ -41,7 +41,7 @@ func CreateCategory(c *fiber.Ctx) error {
 	if err != nil {
 		return c.Status(500).JSON(fiber.Map{
 			"status":  "error",
-			"message": err,
+			"message": err.Error(),
 		})
 	}
 

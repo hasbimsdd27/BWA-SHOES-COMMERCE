@@ -7,10 +7,9 @@ import (
 )
 
 type ProductGaleries struct {
-	ID        uint     `json:"id" gorm:"primary_key;autoIncrement"`
-	ProductId int      `json:"product_id"`
-	Url       string   `json:"url"`
-	Product   Products `gorm:"foreignKey:ProductId"`
+	ID        uint   `json:"id" gorm:"primary_key;autoIncrement"`
+	ProductId int    `json:"product_id" gorm:"\"property_group\"(id)" `
+	Url       string `json:"url"`
 	CreatedAt time.Time
 	UpdatedAt time.Time
 	DeletedAt gorm.DeletedAt
