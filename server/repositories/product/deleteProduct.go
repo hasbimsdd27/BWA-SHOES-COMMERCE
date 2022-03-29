@@ -7,13 +7,13 @@ import (
 	"github.com/gofiber/fiber/v2"
 )
 
-func DetailProduct(c *fiber.Ctx) error {
+func DeleteProduct(c *fiber.Ctx) error {
 	var product models.Products
 
-	db := libs.DB
 	id := c.Params("id")
+	db := libs.DB
 
-	if err := db.Preload("Category").Preload("Galeries").Where("id = ?", id).First(&product).Error; err != nil {
+	if err := db.Where("id = ?", id).First(&product).Error; err != nil {
 		if err.Error() == "record not found" {
 			return c.Status(404).JSON(fiber.Map{
 				"status":  "error",
@@ -30,13 +30,19 @@ func DetailProduct(c *fiber.Ctx) error {
 	if product.ID == 0 {
 		return c.Status(404).JSON(fiber.Map{
 			"status":  "error",
-			"message": "data not found",
+			"message": "product not found",
+		})
+	}
+	if err := db.Delete(&product).Error; err != nil {
+		return c.Status(500).JSON(fiber.Map{
+			"status":  "error",
+			"message": err.Error(),
 		})
 	}
 
-	return c.JSON(fiber.Map{
-		"status": "success",
-		"data":   product,
+	return c.Status(204).JSON(fiber.Map{
+		"status":  "success",
+		"message": "data deleted",
 	})
 
 }

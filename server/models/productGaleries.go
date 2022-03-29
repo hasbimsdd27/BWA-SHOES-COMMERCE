@@ -12,5 +12,5 @@ type ProductGaleries struct {
 	Url       string `json:"url"`
 	CreatedAt time.Time
 	UpdatedAt time.Time
-	DeletedAt gorm.DeletedAt
+	DeletedAt gorm.DeletedAt `json:"-"`
 }

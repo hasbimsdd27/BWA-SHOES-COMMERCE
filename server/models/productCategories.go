@@ -11,5 +11,5 @@ type ProductCategories struct {
 	Name      string `json:"name"`
 	CreatedAt time.Time
 	UpdatedAt time.Time
-	DeletedAt gorm.DeletedAt
+	DeletedAt gorm.DeletedAt `json:"-"`
 }

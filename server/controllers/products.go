@@ -17,3 +17,11 @@ func CreateProduct(c *fiber.Ctx) error {
 func GetDetailProduct(c *fiber.Ctx) error {
 	return productRepositories.DetailProduct(c)
 }
+
+func UpdateProduct(c *fiber.Ctx) error {
+	return productRepositories.UpdateProduct(c)
+}
+
+func DeleteProduct(c *fiber.Ctx) error {
+	return productRepositories.DeleteProduct(c)
+}

@@ -8,7 +8,6 @@ import (
 )
 
 type Payload struct {
-	ID          uint     `json:"id"`
 	Name        string   `json:"name"`
 	Price       float32  `json:"price"`
 	Description string   `json:"description"`
@@ -64,10 +63,18 @@ func CreateProduct(c *fiber.Ctx) error {
 	}
 
 	if err := db.Where("id = ?", payload.CategoryId).First(&category).Error; err != nil {
-		return c.Status(404).JSON(fiber.Map{
-			"status":  "error",
-			"message": "category not found",
-		})
+		if err.Error() == "record not found" {
+			return c.Status(404).JSON(fiber.Map{
+				"status":  "error",
+				"message": "category not found",
+			})
+		} else {
+			return c.Status(500).JSON(fiber.Map{
+				"status":  "error",
+				"message": err.Error(),
+			})
+		}
+
 	}
 
 	if len(errors) != 0 {

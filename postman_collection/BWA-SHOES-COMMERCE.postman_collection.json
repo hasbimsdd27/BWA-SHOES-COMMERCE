@@ -1,0 +1,224 @@
+{
+	"info": {
+		"_postman_id": "40da0b5c-b1b7-466b-8d9e-46c29e9dc924",
+		"name": "BWA-SHOES-COMMERCE",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Category",
+			"item": [
+				{
+					"name": "Add Category",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\":\"Sneakers\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5000/api/category",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"category"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Products",
+			"item": [
+				{
+					"name": "Get All Products",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:5000/api/products?limit=5&price_form=0&categories=1&page=1",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"products"
+							],
+							"query": [
+								{
+									"key": "limit",
+									"value": "5",
+									"description": "limit, int"
+								},
+								{
+									"key": "name",
+									"value": "Sepatu",
+									"description": "name, string",
+									"disabled": true
+								},
+								{
+									"key": "price_form",
+									"value": "0",
+									"description": "price_from, int"
+								},
+								{
+									"key": "price_to",
+									"value": "75000",
+									"description": "price_to, int",
+									"disabled": true
+								},
+								{
+									"key": "tags",
+									"value": "hot",
+									"description": "tags, string",
+									"disabled": true
+								},
+								{
+									"key": "categories",
+									"value": "1",
+									"description": "categories_id, int"
+								},
+								{
+									"key": "page",
+									"value": "1",
+									"description": "page int"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Product",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"sepatu 10\",\r\n    \"price\": 100000,\r\n    \"description\": \"ini sepatu 10\",\r\n    \"tags\": \"new\",\r\n    \"category_id\": 1,\r\n    \"galeries\": [\r\n        \"https://images.unsplash.com/photo-1542291026-7eec264c27ff?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80\",\r\n        \"https://images.unsplash.com/photo-1560769629-975ec94e6a86?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=764&q=80\"\r\n    ]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5000/api/product",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"product"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Detail Product",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:5000/api/product/1",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"product",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Product",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"sepatu 10\",\r\n    \"price\": 100000,\r\n    \"description\": \"ini sepatu 10\",\r\n    \"tags\": \"new\",\r\n    \"category_id\": 1,\r\n    \"galeries\": [\r\n        \"https://images.unsplash.com/photo-1542291026-7eec264c27ff?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80\",\r\n        \"https://images.unsplash.com/photo-1560769629-975ec94e6a86?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=764&q=80\",\r\n        \"https://thumbs.dreamstime.com/z/magenta-tennis-shoes-857296.jpg\"\r\n    ],\r\n    \"CreatedAt\": \"2022-03-28T09:13:12.149+07:00\",\r\n    \"UpdatedAt\": \"2022-03-28T09:13:12.149+07:00\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:5000/api/product/1",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"product",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Product",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "localhost:5000/api/product/6",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"product",
+								"6"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Hello World",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:5000/api/",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"api",
+						""
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
