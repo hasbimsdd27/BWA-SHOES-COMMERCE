@@ -1,4 +1,4 @@
-package repositories
+package categoryRepositories
 
 import (
 	"server/libs"
