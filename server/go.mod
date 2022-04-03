@@ -5,7 +5,7 @@ go 1.17
 require (
 	github.com/gofiber/fiber/v2 v2.30.0
 	github.com/joho/godotenv v1.4.0
-	golang.org/x/crypto v0.0.0-20220321153916-2c7772ba3064
+	golang.org/x/crypto v0.0.0-20220331220935-ae2d96664a29
 	gorm.io/driver/mysql v1.3.2
 	gorm.io/gorm v1.23.3
 )

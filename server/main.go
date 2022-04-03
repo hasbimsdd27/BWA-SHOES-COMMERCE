@@ -1,6 +1,7 @@
 package main
 
 import (
+	"log"
 	"server/libs"
 	"server/routers"
 	"server/utils"
@@ -18,5 +19,5 @@ func main() {
 	app.Use(logger.New())
 	routers.SetupRouter(app)
 
-	app.Listen(":" + PORT)
+	log.Fatal(app.Listen(":" + PORT))
 }
