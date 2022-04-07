@@ -98,6 +98,7 @@ func Login(c *fiber.Ctx) error {
 		"status": "success",
 		"data": &ResponseRegister{
 			AccessToken: tokenString,
+			Role:        string(user.Role),
 		},
 	})
 }

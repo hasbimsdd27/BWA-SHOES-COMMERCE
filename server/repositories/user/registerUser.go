@@ -31,6 +31,7 @@ type Claims struct {
 
 type ResponseRegister struct {
 	AccessToken string `json:"access_token"`
+	Role        string `json:"role"`
 }
 
 func Register(c *fiber.Ctx) error {
@@ -162,6 +163,7 @@ func Register(c *fiber.Ctx) error {
 		"status": "success",
 		"data": &ResponseRegister{
 			AccessToken: tokenString,
+			Role:        string(UserData.Role),
 		},
 	})
 }
