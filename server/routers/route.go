@@ -22,5 +22,6 @@ func SetupRouter(app *fiber.App) {
 	api.Delete("/category/:id", controllers.DeleteCategory)
 
 	api.Post("/register", controllers.Register)
+	api.Post("/login", controllers.Login)
 
 }

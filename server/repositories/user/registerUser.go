@@ -3,7 +3,9 @@ package userRepositories
 import (
 	"server/libs"
 	"server/models"
+	"server/utils"
 
+	"github.com/dgrijalva/jwt-go"
 	"github.com/gofiber/fiber/v2"
 	"golang.org/x/crypto/bcrypt"
 )
@@ -20,6 +22,15 @@ type RegisterPayload struct {
 type ErrorMessage struct {
 	Field   string `json:"field"`
 	Message string `json:"message"`
+}
+
+type Claims struct {
+	Id int `json:"id"`
+	jwt.StandardClaims
+}
+
+type ResponseRegister struct {
+	AccessToken string `json:"access_token"`
 }
 
 func Register(c *fiber.Ctx) error {
@@ -130,8 +141,27 @@ func Register(c *fiber.Ctx) error {
 		})
 	}
 
+	claims := &Claims{
+		Id: int(UserData.ID),
+	}
+
+	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
+
+	AccessKey := utils.GetENV("ACCESS_KEY_SECRET")
+
+	tokenString, err := token.SignedString([]byte(AccessKey))
+
+	if err != nil {
+		return c.Status(500).JSON(fiber.Map{
+			"status": "error",
+			"data":   err.Error(),
+		})
+	}
+
 	return c.JSON(fiber.Map{
 		"status": "success",
-		"data":   UserData,
+		"data": &ResponseRegister{
+			AccessToken: tokenString,
+		},
 	})
 }

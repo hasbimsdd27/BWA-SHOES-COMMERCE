@@ -9,3 +9,7 @@ import (
 func Register(c *fiber.Ctx) error {
 	return userRepositories.Register(c)
 }
+
+func Login(c *fiber.Ctx) error {
+	return userRepositories.Login(c)
+}
