@@ -15,7 +15,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"name\":\"Sneakers\"\r\n}",
+							"raw": "{\r\n    \"name\":\"Formal\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -173,7 +173,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "localhost:5000/api/products?limit=5&price_form=0&categories=1&page=1",
+							"raw": "localhost:5000/api/products?limit=5&price_form=0&categories=1&page=2",
 							"host": [
 								"localhost"
 							],
@@ -218,7 +218,7 @@
 								},
 								{
 									"key": "page",
-									"value": "1",
+									"value": "2",
 									"description": "page int"
 								}
 							]
@@ -233,7 +233,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"name\": \"sepatu 10\",\r\n    \"price\": 100000,\r\n    \"description\": \"ini sepatu 10\",\r\n    \"tags\": \"new\",\r\n    \"category_id\": 1,\r\n    \"galeries\": [\r\n        \"https://images.unsplash.com/photo-1542291026-7eec264c27ff?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80\",\r\n        \"https://images.unsplash.com/photo-1560769629-975ec94e6a86?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=764&q=80\"\r\n    ]\r\n}",
+							"raw": "{\r\n    \"name\": \"Sepatu Formal\",\r\n    \"price\": 100000,\r\n    \"description\": \"Sepatu Formal\",\r\n    \"tags\": \"new\",\r\n    \"category_id\": 3,\r\n    \"galeries\": [\r\n        \"https://images.unsplash.com/photo-1542291026-7eec264c27ff?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80\",\r\n        \"https://images.unsplash.com/photo-1560769629-975ec94e6a86?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=764&q=80\"\r\n    ]\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -319,6 +319,69 @@
 								"api",
 								"product",
 								"6"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "User",
+			"item": [
+				{
+					"name": "Register",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n   \r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5000/api/register",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"register"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Login",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\":\"johndoe2@mail.com\",\r\n    \"password\":\"asdf1234\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5000/api/login",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"login"
 							]
 						}
 					},

@@ -46,7 +46,7 @@ func ConnectDB() {
 	})
 
 	if err != nil {
-		fmt.Println(err.Error())
+		panic(err.Error())
 	}
 
 	DB.AutoMigrate(
