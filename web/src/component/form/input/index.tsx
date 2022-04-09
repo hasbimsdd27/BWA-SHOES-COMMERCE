@@ -11,6 +11,7 @@ interface IPropsInput {
   value?: string;
   id: string;
   className?: string;
+  validator: (value: string) => RegExpMatchArray | null;
 }
 
 const Input: Component<IPropsInput> = ({
@@ -22,6 +23,7 @@ const Input: Component<IPropsInput> = ({
   value,
   id,
   className,
+  validator,
 }) => {
   const [focus, setFocus] = createSignal(false);
   const [error, setError] = createSignal(false);
@@ -37,11 +39,7 @@ const Input: Component<IPropsInput> = ({
 
   const checkValue = (id: string) => {
     const value = (document.querySelector(`#${id}`) as HTMLInputElement).value;
-    if (
-      value.match(
-        /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
-      )
-    ) {
+    if (validator(value)) {
       setError(false);
     } else {
       setError(true);
@@ -53,10 +51,10 @@ const Input: Component<IPropsInput> = ({
       <div class="text-white mb-3">{label}</div>
       <div
         class={`flex flex-row w-full bg-app-input rounded-md p-4 items-center border-2 ${
-          focus()
-            ? error()
-              ? "border-app-danger"
-              : "border-app-primary"
+          error()
+            ? "border-app-danger"
+            : focus()
+            ? "border-app-primary"
             : "border-app-input"
         }`}
       >
@@ -71,7 +69,7 @@ const Input: Component<IPropsInput> = ({
             id={id}
             onBlur={() => setFocus(false)}
             onFocus={() => setFocus(true)}
-            onInput={(e) => checkValue(e.target.id)}
+            onInput={(e) => (!!validator ? checkValue(e.target.id) : {})}
           />
         </div>
       </div>

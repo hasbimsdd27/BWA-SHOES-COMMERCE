@@ -1,10 +1,23 @@
 import { useNavigate } from "solid-app-router";
-import type { Component } from "solid-js";
+import { Component, createSignal } from "solid-js";
 import SVGAssets from "../../assets/svg";
 import { Input } from "../../component/form";
 
 const Login: Component = () => {
   const navigate = useNavigate();
+
+  const emailValidator = (value: string) => {
+    return value.match(
+      /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+    );
+  };
+
+  const passwordValidator = (value: string) => {
+    return value.match(
+      /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/
+    );
+  };
+
   return (
     <div class="h-screen w-screen flex bg-app-background text-app-white flex-col items-center justify-center">
       <div class="w-80">
@@ -31,6 +44,7 @@ const Login: Component = () => {
               name="email"
               type="email"
               className="mb-6"
+              validator={emailValidator}
             />
 
             <Input
@@ -41,6 +55,7 @@ const Login: Component = () => {
               name="password"
               type="password"
               className="mb-12"
+              validator={passwordValidator}
             />
 
             <div>
