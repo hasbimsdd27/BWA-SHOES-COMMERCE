@@ -23,5 +23,6 @@ func SetupRouter(app *fiber.App) {
 
 	api.Post("/register", controllers.Register)
 	api.Post("/login", controllers.Login)
+	api.Post("/login-admin", controllers.LoginAdmin)
 
 }

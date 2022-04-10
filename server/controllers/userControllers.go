@@ -13,3 +13,7 @@ func Register(c *fiber.Ctx) error {
 func Login(c *fiber.Ctx) error {
 	return userRepositories.Login(c)
 }
+
+func LoginAdmin(c *fiber.Ctx) error {
+	return userRepositories.LoginAdmin(c)
+}

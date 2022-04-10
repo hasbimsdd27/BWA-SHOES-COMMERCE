@@ -1,6 +1,7 @@
 package userRepositories
 
 import (
+	"fmt"
 	"server/libs"
 	"server/models"
 	"server/utils"
@@ -10,12 +11,7 @@ import (
 	"golang.org/x/crypto/bcrypt"
 )
 
-type PayloadLogin struct {
-	Email    string `json:"email"`
-	Password string `json:"password"`
-}
-
-func Login(c *fiber.Ctx) error {
+func LoginAdmin(c *fiber.Ctx) error {
 	var payloadLogin PayloadLogin
 	var errorMessage []ErrorMessage
 	var user models.Users
@@ -70,6 +66,8 @@ func Login(c *fiber.Ctx) error {
 		}
 	}
 
+	fmt.Println(user)
+
 	if err := bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(payloadLogin.Password)); err != nil {
 		return c.Status(400).JSON(fiber.Map{
 			"status":  "error",
@@ -94,6 +92,13 @@ func Login(c *fiber.Ctx) error {
 		})
 	}
 
+	if user.Role != "ADMIN" {
+		return c.Status(403).JSON(fiber.Map{
+			"status":  "error",
+			"message": "you are not allowed to access this page",
+		})
+	}
+
 	return c.JSON(fiber.Map{
 		"status": "success",
 		"data": &ResponseRegister{
@@ -101,5 +106,6 @@ func Login(c *fiber.Ctx) error {
 			Role:        string(user.Role),
 			Fullname:    user.Name,
 		},
+		"user": user,
 	})
 }
