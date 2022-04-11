@@ -106,6 +106,5 @@ func LoginAdmin(c *fiber.Ctx) error {
 			Role:        string(user.Role),
 			Fullname:    user.Name,
 		},
-		"user": user,
 	})
 }
