@@ -2,6 +2,7 @@ package routers
 
 import (
 	"server/controllers"
+	"server/middlewares"
 
 	"github.com/gofiber/fiber/v2"
 )
@@ -15,7 +16,7 @@ func SetupRouter(app *fiber.App) {
 	api.Put("/product/:id", controllers.UpdateProduct)
 	api.Delete("/product/:id", controllers.DeleteProduct)
 
-	api.Get("/categories", controllers.GetAllCategory)
+	api.Get("/categories", middlewares.MiddlewareUser, controllers.GetAllCategory)
 	api.Get("/category/:id", controllers.GetDetailCategory)
 	api.Post("/category", controllers.CreateCategory)
 	api.Put("/category/:id", controllers.UpdateCategory)

@@ -1,5 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
-import { SVGFetcher } from "../../utils";
+import React, { useRef, useState } from "react";
 import Swal from "sweetalert2";
 import { LoginService } from "../../service/auth";
 import { useNavigate } from "react-router-dom";
@@ -67,7 +66,7 @@ function Login() {
       if (response.status >= 400) {
         throw new Error(data.message);
       }
-      localStorage.setItem("access_token", data.access_token);
+      localStorage.setItem("access_token", data.data.access_token);
       navigate("/dashboard", { replace: true });
     } catch (error) {
       if (error instanceof Error) {
@@ -79,13 +78,6 @@ function Login() {
       }
     }
   };
-
-  useEffect(() => {
-    setTimeout(() => {
-      SVGFetcher("/Email_Icon.svg", "#email-icon");
-      SVGFetcher("/Password_Icon.svg", "#password-icon");
-    }, 100);
-  }, []);
 
   return (
     <div className="w-screen min-h-screen flex items-center justify-center bg-app-bg-primary text-white">

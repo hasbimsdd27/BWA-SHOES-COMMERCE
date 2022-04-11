@@ -78,7 +78,8 @@ func Login(c *fiber.Ctx) error {
 	}
 
 	claims := &Claims{
-		Id: int(user.ID),
+		Id:   int(user.ID),
+		Role: string(user.Role),
 	}
 
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)

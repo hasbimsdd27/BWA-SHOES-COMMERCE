@@ -25,7 +25,8 @@ type ErrorMessage struct {
 }
 
 type Claims struct {
-	Id int `json:"id"`
+	Id   int    `json:"id"`
+	Role string `json:"role"`
 	jwt.StandardClaims
 }
 
