@@ -1,11 +1,22 @@
-import { useCallback, useEffect } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { Layout } from "../../components";
 import { GetAllCategories } from "../../service/category";
 
 function Dashboard() {
+  const [loading, setLoading] = useState<boolean>(false);
   const FetchAllCategory = useCallback(async () => {
-    const response = await GetAllCategories();
-    console.log(response);
+    try {
+      setLoading(true);
+      const response = await GetAllCategories();
+      const responseData = await response.json();
+      console.log(responseData.data);
+      setLoading(false);
+    } catch (error) {
+      if (error instanceof Error) {
+        console.log(error.message);
+      }
+      setLoading(false);
+    }
   }, []);
 
   useEffect(() => {

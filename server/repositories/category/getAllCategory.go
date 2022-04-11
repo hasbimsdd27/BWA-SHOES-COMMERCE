@@ -69,7 +69,7 @@ func GetAllCategory(c *fiber.Ctx) error {
 	totalPages := math.Ceil(float64(count) / float64(limit))
 
 	response.Data = categories
-	response.CurrentPage = query.Page
+	response.CurrentPage = query.Page + 1
 	response.Limit = query.Limit
 	response.TotalPage = totalPages
 	response.TotalData = int(count)
