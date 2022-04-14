@@ -1,7 +1,7 @@
 import React from "react";
 
 interface IpropsButton {
-  className: string;
+  className?: string;
   onClick: () => void;
   loading?: boolean;
   disabled?: boolean;

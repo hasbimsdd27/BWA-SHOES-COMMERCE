@@ -15,7 +15,7 @@ function App() {
     <div className="font-poppins overflow-y-hidden">
       <Suspense
         fallback={
-          <div className="w-screen h-screen bg-app-bg-primary flex items-center justify-center">
+          <div className="text-app-white w-screen h-screen bg-app-bg-primary flex items-center justify-center">
             Loading...
           </div>
         }

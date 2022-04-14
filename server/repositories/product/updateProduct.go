@@ -7,6 +7,7 @@ import (
 	"strings"
 
 	"github.com/gofiber/fiber/v2"
+	"github.com/google/uuid"
 )
 
 type UpdatePayload struct {
@@ -62,7 +63,7 @@ func UpdateProduct(c *fiber.Ctx) error {
 		}
 	}
 
-	if category.ID == 0 {
+	if category.ID == uuid.Nil {
 		return c.Status(404).JSON(fiber.Map{
 			"status":  "error",
 			"message": "category not found",
@@ -124,7 +125,7 @@ func UpdateProduct(c *fiber.Ctx) error {
 
 		for _, value := range AddImage {
 			Galeries = append(Galeries, models.ProductGaleries{
-				ProductId: int(product.ID),
+				ProductId: product.ID,
 				Url:       value,
 			})
 		}

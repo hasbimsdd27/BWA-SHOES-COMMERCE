@@ -5,6 +5,7 @@ import (
 	"server/models"
 
 	"github.com/gofiber/fiber/v2"
+	"github.com/google/uuid"
 )
 
 func DetailProduct(c *fiber.Ctx) error {
@@ -27,7 +28,7 @@ func DetailProduct(c *fiber.Ctx) error {
 		}
 	}
 
-	if product.ID == 0 {
+	if product.ID == uuid.Nil {
 		return c.Status(404).JSON(fiber.Map{
 			"status":  "error",
 			"message": "data not found",

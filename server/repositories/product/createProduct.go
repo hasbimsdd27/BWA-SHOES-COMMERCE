@@ -5,6 +5,7 @@ import (
 	"server/models"
 
 	"github.com/gofiber/fiber/v2"
+	"github.com/google/uuid"
 )
 
 type Payload struct {
@@ -85,6 +86,7 @@ func CreateProduct(c *fiber.Ctx) error {
 	}
 
 	product := &models.Products{
+		ID:          uuid.New(),
 		Name:        payload.Name,
 		Price:       payload.Price,
 		Tags:        payload.Tags,
@@ -99,12 +101,13 @@ func CreateProduct(c *fiber.Ctx) error {
 		})
 	}
 
-	if len(payload.Galeries) > 0 && product.ID != 0 {
+	if len(payload.Galeries) > 0 && product.ID != uuid.Nil {
 		Galeries := []models.ProductGaleries{}
 
 		for _, value := range payload.Galeries {
 			Galeries = append(Galeries, models.ProductGaleries{
-				ProductId: int(product.ID),
+				ID:        uuid.New(),
+				ProductId: product.ID,
 				Url:       value,
 			})
 		}

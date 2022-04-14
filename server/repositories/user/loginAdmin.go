@@ -1,7 +1,6 @@
 package userRepositories
 
 import (
-	"fmt"
 	"server/libs"
 	"server/models"
 	"server/utils"
@@ -66,8 +65,6 @@ func LoginAdmin(c *fiber.Ctx) error {
 		}
 	}
 
-	fmt.Println(user)
-
 	if err := bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(payloadLogin.Password)); err != nil {
 		return c.Status(400).JSON(fiber.Map{
 			"status":  "error",
@@ -76,7 +73,7 @@ func LoginAdmin(c *fiber.Ctx) error {
 	}
 
 	claims := &Claims{
-		Id:   int(user.ID),
+		Id:   user.ID,
 		Role: string(user.Role),
 	}
 

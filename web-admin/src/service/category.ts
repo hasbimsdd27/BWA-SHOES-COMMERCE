@@ -56,3 +56,15 @@ export const EditCategoryName = (name: string, id: number) => {
     }),
   });
 };
+
+export const AddCategoryName = (name: string) =>
+  fetch(`${process.env.REACT_APP_API_URL}/category`, {
+    method: "POST",
+    headers: {
+      "Content-type": "application/json;charset=UTF-8",
+      Authorization: localStorage.getItem("access_token") || "",
+    },
+    body: JSON.stringify({
+      name,
+    }),
+  });

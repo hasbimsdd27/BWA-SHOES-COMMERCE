@@ -5,6 +5,7 @@ import (
 	"server/models"
 
 	"github.com/gofiber/fiber/v2"
+	"github.com/google/uuid"
 )
 
 type PayloadCategory struct {
@@ -35,7 +36,7 @@ func CreateCategory(c *fiber.Ctx) error {
 	}
 
 	category.Name = payloadCategory.Name
-
+	category.ID = uuid.New()
 	err = db.Create(&category).Error
 
 	if err != nil {

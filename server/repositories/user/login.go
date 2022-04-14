@@ -78,7 +78,7 @@ func Login(c *fiber.Ctx) error {
 	}
 
 	claims := &Claims{
-		Id:   int(user.ID),
+		Id:   user.ID,
 		Role: string(user.Role),
 	}
 

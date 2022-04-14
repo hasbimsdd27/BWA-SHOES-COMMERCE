@@ -3,11 +3,12 @@ package models
 import (
 	"time"
 
+	"github.com/google/uuid"
 	"gorm.io/gorm"
 )
 
 type Products struct {
-	ID          uint              `json:"id" gorm:"primary_key;autoIncrement"`
+	ID          uuid.UUID         `gorm:"type:VARCHAR(255);primary_key" json:"id"`
 	Name        string            `json:"name"`
 	Price       float32           `json:"price"`
 	Description string            `json:"description" gorm:"type:text"`

@@ -7,6 +7,7 @@ import (
 
 	"github.com/dgrijalva/jwt-go"
 	"github.com/gofiber/fiber/v2"
+	"github.com/google/uuid"
 	"golang.org/x/crypto/bcrypt"
 )
 
@@ -25,8 +26,8 @@ type ErrorMessage struct {
 }
 
 type Claims struct {
-	Id   int    `json:"id"`
-	Role string `json:"role"`
+	Id   uuid.UUID `json:"id"`
+	Role string    `json:"role"`
 	jwt.StandardClaims
 }
 
@@ -65,7 +66,7 @@ func Register(c *fiber.Ctx) error {
 		}
 	}
 
-	if UserData.ID != 0 {
+	if UserData.ID != uuid.Nil {
 		errorMessage = append(errorMessage, ErrorMessage{
 			Field:   "email",
 			Message: "email already taken",
@@ -81,7 +82,7 @@ func Register(c *fiber.Ctx) error {
 		}
 	}
 
-	if UserData.ID != 0 {
+	if UserData.ID != uuid.Nil {
 		errorMessage = append(errorMessage, ErrorMessage{
 			Field:   "username",
 			Message: "username already taken",
@@ -115,7 +116,7 @@ func Register(c *fiber.Ctx) error {
 			"data":   errorMessage,
 		})
 	}
-
+	UserData.ID = uuid.New()
 	UserData.Email = payload.Email
 	UserData.Username = payload.Username
 	UserData.Password = payload.Password
@@ -145,7 +146,8 @@ func Register(c *fiber.Ctx) error {
 	}
 
 	claims := &Claims{
-		Id: int(UserData.ID),
+		Id:   UserData.ID,
+		Role: string(UserData.Role),
 	}
 
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
