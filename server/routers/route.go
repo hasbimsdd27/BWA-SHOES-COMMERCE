@@ -17,10 +17,11 @@ func SetupRouter(app *fiber.App) {
 	api.Delete("/product/:id", controllers.DeleteProduct)
 
 	api.Get("/categories", middlewares.MiddlewareUser, controllers.GetAllCategory)
-	api.Get("/category/:id", controllers.GetDetailCategory)
-	api.Post("/category", controllers.CreateCategory)
-	api.Put("/category/:id", controllers.UpdateCategory)
-	api.Delete("/category/:id", controllers.DeleteCategory)
+	api.Get("/category/:id", middlewares.MiddlewareUser, controllers.GetDetailCategory)
+	api.Post("/category", middlewares.MiddlewareUser, middlewares.IsAdmin, controllers.CreateCategory)
+	api.Put("/category/:id", middlewares.MiddlewareUser, middlewares.IsAdmin, controllers.UpdateCategory)
+	api.Delete("/category/:id", middlewares.MiddlewareUser, middlewares.IsAdmin, controllers.DeleteCategory)
+	api.Post("/category/delete", middlewares.MiddlewareUser, middlewares.IsAdmin, controllers.BulkDeleteCategory)
 
 	api.Post("/register", controllers.Register)
 	api.Post("/login", controllers.Login)

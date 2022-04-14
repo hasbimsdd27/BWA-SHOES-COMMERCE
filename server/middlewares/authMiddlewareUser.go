@@ -1,7 +1,6 @@
 package middlewares
 
 import (
-	"log"
 	"server/utils"
 
 	"github.com/dgrijalva/jwt-go"
@@ -21,8 +20,6 @@ func MiddlewareUser(c *fiber.Ctx) error {
 			"message": err.Error(),
 		})
 	}
-
-	log.Println(headerData.Authorization)
 
 	tokenString := headerData.Authorization
 	claims := jwt.MapClaims{}

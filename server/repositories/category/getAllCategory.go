@@ -38,28 +38,22 @@ func GetAllCategory(c *fiber.Ctx) error {
 		})
 	}
 
-	base := db
-
 	if query.Limit < 5 {
 		limit = 5
 	} else {
 		limit = query.Limit
 	}
 
-	if query.Name != "" {
-		base.Where("name like ?", "%"+query.Name+"%")
-	}
+	dbData := db.Where("name like ?", "%"+query.Name+"%")
 
-	if err := base.Model(&models.ProductCategories{}).Count(&count).Error; err != nil {
+	if err := dbData.Model(&models.ProductCategories{}).Count(&count).Error; err != nil {
 		return c.Status(500).JSON(fiber.Map{
 			"status":  "error",
 			"message": err.Error(),
 		})
 	}
 
-	base.Offset((query.Page - 1) * limit).Limit(limit)
-
-	if err := base.Find(&categories).Error; err != nil {
+	if err := dbData.Offset((query.Page - 1) * limit).Limit(limit).Find(&categories).Error; err != nil {
 		return c.Status(500).JSON(fiber.Map{
 			"status":  "error",
 			"message": err.Error(),
@@ -69,8 +63,8 @@ func GetAllCategory(c *fiber.Ctx) error {
 	totalPages := math.Ceil(float64(count) / float64(limit))
 
 	response.Data = categories
-	response.CurrentPage = query.Page + 1
-	response.Limit = query.Limit
+	response.CurrentPage = query.Page
+	response.Limit = limit
 	response.TotalPage = totalPages
 	response.TotalData = int(count)
 

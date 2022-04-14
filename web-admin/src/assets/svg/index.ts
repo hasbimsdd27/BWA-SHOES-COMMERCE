@@ -8,6 +8,7 @@ import { ReactComponent as MessageIcon } from "./Message_Icon.svg";
 import { ReactComponent as MainLogoIcon } from "./Main_Logo_Icon.svg";
 import { ReactComponent as UsernameIcon } from "./Username_Icon.svg";
 import { ReactComponent as ExitButton } from "./Exit_Button.svg";
+import { ReactComponent as CloseIcon } from "./close_icon.svg";
 
 const SVGAssets = {
   CartIcon,
@@ -20,6 +21,7 @@ const SVGAssets = {
   MainLogoIcon,
   UsernameIcon,
   ExitButton,
+  CloseIcon,
 };
 
 export default SVGAssets;

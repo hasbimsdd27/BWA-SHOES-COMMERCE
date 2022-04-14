@@ -25,3 +25,7 @@ func UpdateCategory(c *fiber.Ctx) error {
 func DeleteCategory(c *fiber.Ctx) error {
 	return categoryRepositories.DeleteCategory(c)
 }
+
+func BulkDeleteCategory(c *fiber.Ctx) error {
+	return categoryRepositories.BulkDeleteCategory(c)
+}

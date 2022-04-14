@@ -12,7 +12,7 @@ const NotFound = lazy(() => import("./pages/notFound"));
 
 function App() {
   return (
-    <div className="font-poppins">
+    <div className="font-poppins overflow-y-hidden">
       <Suspense
         fallback={
           <div className="w-screen h-screen bg-app-bg-primary flex items-center justify-center">
