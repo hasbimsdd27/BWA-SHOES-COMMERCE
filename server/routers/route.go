@@ -27,4 +27,7 @@ func SetupRouter(app *fiber.App) {
 	api.Post("/login", controllers.Login)
 	api.Post("/login-admin", controllers.LoginAdmin)
 
+	api.Post("/assets", controllers.UploadAssets)
+	api.Delete("/assets/:imageName", controllers.DeleteAssets)
+
 }

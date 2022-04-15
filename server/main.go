@@ -19,6 +19,7 @@ func main() {
 	app := fiber.New()
 	app.Use(logger.New())
 	app.Use(cors.New())
+	app.Static("/assets", "./assets")
 	routers.SetupRouter(app)
 
 	log.Fatal(app.Listen(":" + PORT))
