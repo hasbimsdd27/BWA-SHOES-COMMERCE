@@ -52,12 +52,21 @@ func GetAllCategory(c *fiber.Ctx) error {
 			"message": err.Error(),
 		})
 	}
+	if query.Limit == -1 {
+		if err := dbData.Order("created_at desc").Find(&categories).Error; err != nil {
+			return c.Status(500).JSON(fiber.Map{
+				"status":  "error",
+				"message": err.Error(),
+			})
+		}
+	} else {
+		if err := dbData.Offset((query.Page - 1) * limit).Limit(limit).Order("created_at desc").Find(&categories).Error; err != nil {
+			return c.Status(500).JSON(fiber.Map{
+				"status":  "error",
+				"message": err.Error(),
+			})
+		}
 
-	if err := dbData.Offset((query.Page - 1) * limit).Limit(limit).Order("created_at desc").Find(&categories).Error; err != nil {
-		return c.Status(500).JSON(fiber.Map{
-			"status":  "error",
-			"message": err.Error(),
-		})
 	}
 
 	totalPages := math.Ceil(float64(count) / float64(limit))

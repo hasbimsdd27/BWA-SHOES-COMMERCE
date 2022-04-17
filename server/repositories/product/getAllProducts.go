@@ -13,7 +13,7 @@ type QueryData struct {
 	Limit       int    `query:"limit"`
 	Name        string `query:"name"`
 	Description string `query:"description"`
-	PriceForm   int    `query:"price_form"`
+	PriceFrom   int    `query:"price_from"`
 	PriceTo     int    `query:"price_to"`
 	Tags        string `query:"tags"`
 	Category    int    `query:"category"`
@@ -51,7 +51,7 @@ func AllProducts(c *fiber.Ctx) error {
 		limit = query.Limit
 	}
 
-	base := db.Preload("Category").Preload("Galeries").Where("price >= ?", query.PriceForm)
+	base := db.Preload("Category").Preload("Galeries").Where("price >= ?", query.PriceFrom)
 
 	if query.Name != "" {
 		base.Where("name like ?", "%"+query.Name+"%")

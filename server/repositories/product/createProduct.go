@@ -13,7 +13,7 @@ type Payload struct {
 	Price       float32  `json:"price"`
 	Description string   `json:"description"`
 	Tags        string   `json:"tags"`
-	CategoryId  int      `json:"category_id"`
+	CategoryId  string   `json:"category_id"`
 	Galeries    []string `json:"galeries"`
 }
 
@@ -56,7 +56,7 @@ func CreateProduct(c *fiber.Ctx) error {
 		errors = append(errors, *newError)
 	}
 
-	if payload.CategoryId == 0 {
+	if payload.CategoryId == "" {
 		newError := new(ErrorMessage)
 		newError.Field = "category_id"
 		newError.Message = "invalid category_id"

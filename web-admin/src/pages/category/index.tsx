@@ -63,6 +63,9 @@ function Dashboard() {
         limit: 10,
       });
       const responseData = await response.json();
+      if (response.status >= 400) {
+        throw new Error(responseData.message);
+      }
       responseAllCategories.current = responseData.data;
       setLoading(false);
     } catch (error) {
