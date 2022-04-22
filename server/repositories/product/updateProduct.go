@@ -10,12 +10,8 @@ import (
 	"github.com/google/uuid"
 )
 
-type UpdatePayload struct {
-	Payload
-}
-
 func UpdateProduct(c *fiber.Ctx) error {
-	payload := &UpdatePayload{}
+	payload := &Payload{}
 	var product models.Products
 	var category models.ProductCategories
 	var galeries []models.ProductGaleries
@@ -138,6 +134,25 @@ func UpdateProduct(c *fiber.Ctx) error {
 		}
 
 	}
+	if payload.Name != "" {
+		product.Name = payload.Name
+	}
+
+	if payload.Tags != "" {
+		product.Tags = payload.Tags
+	}
+
+	if payload.CategoryId != "" {
+		product.CategoryId = payload.CategoryId
+	}
+	if payload.Description != "" {
+		product.Description = payload.Description
+	}
+	if payload.Price != 0 {
+		product.Price = payload.Price
+	}
+
+	db.Save(&product)
 
 	db.Preload("Category").Preload("Galeries").Where("id = ?", product.ID).First(&product)
 

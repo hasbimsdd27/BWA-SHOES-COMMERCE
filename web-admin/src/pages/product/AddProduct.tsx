@@ -1,15 +1,22 @@
 import React, { useCallback, useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import Swal from "sweetalert2";
+import { SVGAssets } from "../../assets";
 import { Layout } from "../../components";
 import Button from "../../components/button";
-import { UploadAssets } from "../../service/assets";
+import { DeleteAssets, UploadAssets } from "../../service/assets";
 import { GetAllCategories } from "../../service/category";
-import { AddProductAPI } from "../../service/product";
+import {
+  AddProductAPI,
+  GetDetailProduct,
+  UpdateProduct,
+} from "../../service/product";
+import { InputValueSetter } from "../../utils";
 
 function AddProduct() {
   const navigate = useNavigate();
+  const params = useParams();
   const [imageLink, setImageLink] = useState<string[]>([]);
   const [error, setError] = useState({
     product_name: false,
@@ -114,7 +121,13 @@ function AddProduct() {
         category_id: (e.target as any)["product_category"]?.value,
         galeries: imageLink,
       };
-      const response = await AddProductAPI(payload);
+      let response: any;
+      if (!!params.id) {
+        response = await UpdateProduct(payload, params.id);
+      } else {
+        response = await AddProductAPI(payload);
+      }
+
       const responseData = await response.json();
       if (response.status >= 400) {
         throw new Error(responseData.message);
@@ -164,9 +177,60 @@ function AddProduct() {
     }
   }, []);
 
+  const DeleteAssetsFunction = async (filename: string) => {
+    try {
+      const response = await DeleteAssets(filename.split("/").pop() as string);
+
+      if (response.status >= 400) {
+        const responseData = await response.json();
+        throw new Error(responseData.message);
+      }
+      setImageLink((prev) => prev.filter((item) => item !== filename));
+    } catch (error) {
+      if (error instanceof Error) {
+        Swal.fire({
+          icon: "error",
+          title: "Oops...",
+          text: error.message,
+        });
+      }
+    }
+  };
+
+  const HandleProductDetail = useCallback(async (id: string) => {
+    try {
+      const response = await GetDetailProduct(id);
+      const responseData = await response.json();
+      if (response.status >= 400) {
+        throw new Error(responseData.message);
+      }
+      const data = responseData.data;
+      InputValueSetter("input[name='product_name']", data.name);
+      InputValueSetter("input[name='product_price']", data.price);
+      InputValueSetter("input[name='product_tags']", data.tags);
+      InputValueSetter("select[name='product_category']", data.category_id);
+      InputValueSetter(
+        "textarea[name='product_description']",
+        data.description
+      );
+      setImageLink(data.Galeries.map((item: any) => item.url));
+    } catch (error) {
+      if (error instanceof Error) {
+        Swal.fire({
+          icon: "error",
+          title: "Oops...",
+          text: error.message,
+        });
+      }
+    }
+  }, []);
+
   useEffect(() => {
     FetchCategories();
-  }, [FetchCategories]);
+    if (!!params.id) {
+      HandleProductDetail(params.id);
+    }
+  }, [FetchCategories, HandleProductDetail, params]);
 
   return (
     <Layout>
@@ -286,7 +350,19 @@ function AddProduct() {
                     backgroundRepeat: "no-repeat",
                     backgroundSize: "cover",
                   }}
-                />
+                >
+                  <div className="absolute right-0 top-0 ">
+                    <div
+                      className="bg-app-danger transform -translate-y-3 translate-x-3 rounded-full p-1 cursor-pointer"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        DeleteAssetsFunction(item);
+                      }}
+                    >
+                      <SVGAssets.CloseIcon className="fill-app-white h-4 w-4" />
+                    </div>
+                  </div>
+                </div>
               ))}
               <div className="w-32 h-32 border-2 border-dashed border-app-secondary rounded-md mx-2 flex items-center justify-center relative">
                 <>

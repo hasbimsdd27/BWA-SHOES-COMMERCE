@@ -7,6 +7,7 @@ import CustomCheckbox from "../../components/customCheckbox";
 import { GetAllProductsAPI } from "../../service/product";
 
 function Dashboard() {
+  const navigate = useNavigate();
   const [loading, setLoading] = useState<boolean>(false);
   const responseAllProducts: {
     current: {
@@ -42,8 +43,6 @@ function Dashboard() {
     page: 1,
     limit: 5,
   });
-
-  const navigate = useNavigate();
 
   const GetAllProducts = useCallback(async () => {
     try {
@@ -154,7 +153,9 @@ function Dashboard() {
                     <div className="flex items-center justify-center">
                       <Button
                         className="bg-yellow-500 px-2 py-1 mr-2 text-app-secondary"
-                        onClick={() => {}}
+                        onClick={() => {
+                          navigate(`/product/${item.id}`);
+                        }}
                         loading={false}
                       >
                         Edit

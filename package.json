@@ -1,0 +1,12 @@
+{
+  "name": "server",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev-server":"cd ./server && nodemon --exec go run main.go --signal SIGTERM",
+    "dev-web-admin":"cd ./web-admin && npm start"
+  },
+  "author": "",
+  "license": "ISC"
+}

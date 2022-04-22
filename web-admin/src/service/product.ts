@@ -1,11 +1,13 @@
-export const AddProductAPI = (payload: {
+interface IPayloadProduct {
   name: string;
   price: number;
   description: string;
   tags: string;
   category_id: string;
   galeries: string[];
-}) =>
+}
+
+export const AddProductAPI = (payload: IPayloadProduct) =>
   fetch(`${process.env.REACT_APP_API_URL}/product`, {
     method: "POST",
     headers: {
@@ -39,3 +41,22 @@ export const GetAllProductsAPI = (params: {
     },
   });
 };
+
+export const GetDetailProduct = (id: string) =>
+  fetch(`${process.env.REACT_APP_API_URL}/product/${id}`, {
+    method: "GET",
+    headers: {
+      "Content-type": "application/json;charset=UTF-8",
+      Authorization: localStorage.getItem("access_token") || "",
+    },
+  });
+
+export const UpdateProduct = (payload: IPayloadProduct, id: string) =>
+  fetch(`${process.env.REACT_APP_API_URL}/product/${id}`, {
+    method: "PUT",
+    headers: {
+      "Content-type": "application/json;charset=UTF-8",
+      Authorization: localStorage.getItem("access_token") || "",
+    },
+    body: JSON.stringify(payload),
+  });
