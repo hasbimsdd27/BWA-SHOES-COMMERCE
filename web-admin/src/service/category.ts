@@ -12,7 +12,7 @@ export const GetAllCategories = (params: IParamsGetAllCategories) => {
     )
     .join("&");
 
-  return fetch(`${process.env.REACT_APP_API_URL}/categories?${query}`, {
+  return fetch(`${import.meta.env.VITE_API_URL}/categories?${query}`, {
     method: "GET",
     headers: {
       "Content-type": "application/json;charset=UTF-8",
@@ -22,7 +22,7 @@ export const GetAllCategories = (params: IParamsGetAllCategories) => {
 };
 
 export const DeleteCategory = (id: number) => {
-  return fetch(`${process.env.REACT_APP_API_URL}/category/${id}`, {
+  return fetch(`${import.meta.env.VITE_API_URL}/category/${id}`, {
     method: "DELETE",
     headers: {
       "Content-type": "application/json;charset=UTF-8",
@@ -32,7 +32,7 @@ export const DeleteCategory = (id: number) => {
 };
 
 export const DeleteCategories = (ids: number[]) => {
-  return fetch(`${process.env.REACT_APP_API_URL}/category/delete`, {
+  return fetch(`${import.meta.env.VITE_API_URL}/category/delete`, {
     method: "POST",
     headers: {
       "Content-type": "application/json;charset=UTF-8",
@@ -45,7 +45,7 @@ export const DeleteCategories = (ids: number[]) => {
 };
 
 export const EditCategoryName = (name: string, id: number) => {
-  return fetch(`${process.env.REACT_APP_API_URL}/category/${id}`, {
+  return fetch(`${import.meta.env.VITE_API_URL}/category/${id}`, {
     method: "PUT",
     headers: {
       "Content-type": "application/json;charset=UTF-8",
@@ -58,7 +58,7 @@ export const EditCategoryName = (name: string, id: number) => {
 };
 
 export const AddCategoryName = (name: string) =>
-  fetch(`${process.env.REACT_APP_API_URL}/category`, {
+  fetch(`${import.meta.env.VITE_API_URL}/category`, {
     method: "POST",
     headers: {
       "Content-type": "application/json;charset=UTF-8",

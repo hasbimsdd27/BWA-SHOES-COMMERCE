@@ -8,7 +8,7 @@ interface IPayloadProduct {
 }
 
 export const AddProductAPI = (payload: IPayloadProduct) =>
-  fetch(`${process.env.REACT_APP_API_URL}/product`, {
+  fetch(`${import.meta.env.VITE_API_URL}/product`, {
     method: "POST",
     headers: {
       "Content-type": "application/json;charset=UTF-8",
@@ -33,7 +33,7 @@ export const GetAllProductsAPI = (params: {
     )
     .join("&");
 
-  return fetch(`${process.env.REACT_APP_API_URL}/products?${query}`, {
+  return fetch(`${import.meta.env.VITE_API_URL}/products?${query}`, {
     method: "GET",
     headers: {
       "Content-type": "application/json;charset=UTF-8",
@@ -43,7 +43,7 @@ export const GetAllProductsAPI = (params: {
 };
 
 export const GetDetailProduct = (id: string) =>
-  fetch(`${process.env.REACT_APP_API_URL}/product/${id}`, {
+  fetch(`${import.meta.env.VITE_API_URL}/product/${id}`, {
     method: "GET",
     headers: {
       "Content-type": "application/json;charset=UTF-8",
@@ -52,7 +52,7 @@ export const GetDetailProduct = (id: string) =>
   });
 
 export const UpdateProduct = (payload: IPayloadProduct, id: string) =>
-  fetch(`${process.env.REACT_APP_API_URL}/product/${id}`, {
+  fetch(`${import.meta.env.VITE_API_URL}/product/${id}`, {
     method: "PUT",
     headers: {
       "Content-type": "application/json;charset=UTF-8",

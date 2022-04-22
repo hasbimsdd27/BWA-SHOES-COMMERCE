@@ -208,6 +208,11 @@ module.exports = {
       "3xl": "1.5rem",
       full: "9999px",
     },
+    /*
+    borderSpacing: ({ theme }) => ({
+      ...theme('spacing'),
+    }),
+    */
     borderWidth: {
       DEFAULT: "1px",
       0: "0px",
@@ -391,7 +396,6 @@ module.exports = {
         '"Courier New"',
         "monospace",
       ],
-      poppins: ["Poppins", "sans-serif"],
     },
     fontSize: {
       xs: ["0.75rem", { lineHeight: "1rem" }],
