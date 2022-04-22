@@ -54,20 +54,20 @@ func AllProducts(c *fiber.Ctx) error {
 	base := db.Preload("Category").Preload("Galeries").Where("price >= ?", query.PriceFrom)
 
 	if query.Name != "" {
-		base.Where("name like ?", "%"+query.Name+"%")
+		base = base.Where("name like ?", "%"+query.Name+"%")
 	}
 
 	if query.PriceTo != 0 {
-		base.Where("price <= ?", query.PriceTo)
+		base = base.Where("price <= ?", query.PriceTo)
 
 	}
 
 	if query.Tags != "" {
-		base.Where("tags like ?", "%"+query.Tags+"%")
+		base = base.Where("tags like ?", "%"+query.Tags+"%")
 	}
 
 	if query.Category != 0 {
-		base.Where("category_id = ?", query.Category)
+		base = base.Where("category_id = ?", query.Category)
 	}
 
 	if err := base.Find(&products).Count(&count).Error; err != nil {
@@ -77,9 +77,9 @@ func AllProducts(c *fiber.Ctx) error {
 		})
 	}
 
-	base.Offset((query.Page - 1) * limit).Limit(limit)
+	base = base.Offset((query.Page - 1) * limit).Limit(limit)
 
-	if err := base.Find(&products).Error; err != nil {
+	if err := base.Order("created_at desc").Find(&products).Error; err != nil {
 		return c.Status(500).JSON(fiber.Map{
 			"status":  "error",
 			"message": err.Error(),

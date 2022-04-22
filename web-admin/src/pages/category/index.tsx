@@ -52,7 +52,7 @@ function Dashboard() {
 
   const TempId: { current: string[] } = useRef([]);
 
-  const timeoutRef: { current: NodeJS.Timeout | null } = useRef(null);
+  const timeoutRef: { current: any } = useRef(null);
 
   const FetchAllCategory = useCallback(async (page: number, name: string) => {
     try {
@@ -82,7 +82,7 @@ function Dashboard() {
   };
 
   const HandleSearchData = (value: string) => {
-    clearInterval(timeoutRef.current as NodeJS.Timeout);
+    clearInterval(timeoutRef.current as any);
     currentFilter.current.name = value;
     timeoutRef.current = setTimeout(
       () => FetchAllCategory(1, currentFilter.current.name),

@@ -60,3 +60,12 @@ export const UpdateProduct = (payload: IPayloadProduct, id: string) =>
     },
     body: JSON.stringify(payload),
   });
+
+export const DeleteSingleProductAPI = (id: string) =>
+  fetch(`${import.meta.env.VITE_API_URL}/product/${id}`, {
+    method: "DELETE",
+    headers: {
+      "Content-type": "application/json;charset=UTF-8",
+      Authorization: localStorage.getItem("access_token") || "",
+    },
+  });

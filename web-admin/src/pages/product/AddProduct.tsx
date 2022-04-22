@@ -178,23 +178,37 @@ function AddProduct() {
   }, []);
 
   const DeleteAssetsFunction = async (filename: string) => {
-    try {
-      const response = await DeleteAssets(filename.split("/").pop() as string);
+    Swal.fire({
+      title: "Are you sure?",
+      text: `Are you sure want to delete this image?`,
+      icon: "warning",
+      showCancelButton: true,
+      reverseButtons: true,
+      confirmButtonColor: "#d33",
+      confirmButtonText: "Delete",
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        try {
+          const response = await DeleteAssets(
+            filename.split("/").pop() as string
+          );
 
-      if (response.status >= 400) {
-        const responseData = await response.json();
-        throw new Error(responseData.message);
+          if (response.status >= 400) {
+            const responseData = await response.json();
+            throw new Error(responseData.message);
+          }
+          setImageLink((prev) => prev.filter((item) => item !== filename));
+        } catch (error) {
+          if (error instanceof Error) {
+            Swal.fire({
+              icon: "error",
+              title: "Oops...",
+              text: error.message,
+            });
+          }
+        }
       }
-      setImageLink((prev) => prev.filter((item) => item !== filename));
-    } catch (error) {
-      if (error instanceof Error) {
-        Swal.fire({
-          icon: "error",
-          title: "Oops...",
-          text: error.message,
-        });
-      }
-    }
+    });
   };
 
   const HandleProductDetail = useCallback(async (id: string) => {
