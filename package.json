@@ -4,8 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev-server":"cd ./server && nodemon --exec go run main.go --signal SIGTERM",
-    "dev-web-admin":"cd ./web-admin && npm run dev"
+    "dev-server": "cd ./server && nodemon --exec go run main.go --signal SIGTERM",
+    "dev-web-admin": "cd ./web-admin && npm run dev",
+    "dev-web-client": "cd ./web-client && npm run dev"
   },
   "author": "",
   "license": "ISC"

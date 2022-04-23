@@ -1,0 +1,20 @@
+{
+  "0 debug pnpm:scope": {
+    "selected": 1
+  },
+  "1 error pnpm": {
+    "shortMessage": "Command failed with exit code 1: /home/hasbi/.nvm/versions/node/v16.14.2/bin/pnpm add create-web-client --global --global-dir /tmp/dlx-7071 --dir /tmp/dlx-7071",
+    "command": "/home/hasbi/.nvm/versions/node/v16.14.2/bin/pnpm add create-web-client --global --global-dir /tmp/dlx-7071 --dir /tmp/dlx-7071",
+    "escapedCommand": "\"/home/hasbi/.nvm/versions/node/v16.14.2/bin/pnpm\" add create-web-client --global --global-dir \"/tmp/dlx-7071\" --dir \"/tmp/dlx-7071\"",
+    "exitCode": 1,
+    "failed": true,
+    "timedOut": false,
+    "isCanceled": false,
+    "killed": false,
+    "err": {
+      "name": "pnpm",
+      "message": "Command failed with exit code 1: /home/hasbi/.nvm/versions/node/v16.14.2/bin/pnpm add create-web-client --global --global-dir /tmp/dlx-7071 --dir /tmp/dlx-7071",
+      "stack": "pnpm: Command failed with exit code 1: /home/hasbi/.nvm/versions/node/v16.14.2/bin/pnpm add create-web-client --global --global-dir /tmp/dlx-7071 --dir /tmp/dlx-7071\n    at makeError (/home/hasbi/.nvm/versions/node/v16.14.2/pnpm-global/5/node_modules/.pnpm/pnpm@6.32.8/node_modules/pnpm/dist/pnpm.cjs:42570:17)\n    at handlePromise (/home/hasbi/.nvm/versions/node/v16.14.2/pnpm-global/5/node_modules/.pnpm/pnpm@6.32.8/node_modules/pnpm/dist/pnpm.cjs:43141:33)\n    at processTicksAndRejections (node:internal/process/task_queues:96:5)\n    at async Object.handler (/home/hasbi/.nvm/versions/node/v16.14.2/pnpm-global/5/node_modules/.pnpm/pnpm@6.32.8/node_modules/pnpm/dist/pnpm.cjs:177884:7)\n    at async /home/hasbi/.nvm/versions/node/v16.14.2/pnpm-global/5/node_modules/.pnpm/pnpm@6.32.8/node_modules/pnpm/dist/pnpm.cjs:182575:21\n    at async run (/home/hasbi/.nvm/versions/node/v16.14.2/pnpm-global/5/node_modules/.pnpm/pnpm@6.32.8/node_modules/pnpm/dist/pnpm.cjs:182549:34)\n    at async runPnpm (/home/hasbi/.nvm/versions/node/v16.14.2/pnpm-global/5/node_modules/.pnpm/pnpm@6.32.8/node_modules/pnpm/dist/pnpm.cjs:182768:5)\n    at async /home/hasbi/.nvm/versions/node/v16.14.2/pnpm-global/5/node_modules/.pnpm/pnpm@6.32.8/node_modules/pnpm/dist/pnpm.cjs:182760:7"
+    }
+  }
+}
