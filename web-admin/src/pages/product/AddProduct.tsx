@@ -55,24 +55,26 @@ function AddProduct() {
   };
 
   const handleUploadImage = async (file: File) => {
-    try {
-      const payload = new FormData();
-      payload.append("assets", file);
+    if (!!file) {
+      try {
+        const payload = new FormData();
+        payload.append("assets", file);
 
-      const response = await UploadAssets(payload);
-      const data = await response.json();
-      if (response.status >= 400) {
-        throw new Error(data.message);
-      }
-      setImageLink((prev) => [...prev, data.data.image_url]);
-      toast.success("Image Uploaded");
-    } catch (error) {
-      if (error instanceof Error) {
-        Swal.fire({
-          icon: "error",
-          title: "Oops...",
-          text: error.message,
-        });
+        const response = await UploadAssets(payload);
+        const data = await response.json();
+        if (response.status >= 400) {
+          throw new Error(data.message);
+        }
+        setImageLink((prev) => [...prev, data.data.image_url]);
+        toast.success("Image Uploaded");
+      } catch (error) {
+        if (error instanceof Error) {
+          Swal.fire({
+            icon: "error",
+            title: "Oops...",
+            text: error.message,
+          });
+        }
       }
     }
   };

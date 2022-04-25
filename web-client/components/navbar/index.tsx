@@ -7,16 +7,16 @@ const Navbar = () => {
     searchInput: false,
   });
   return (
-    <div className="w-screen flex flex-row items-center">
+    <div className="w-screen flex flex-row items-center justify-center">
       <div className="max-w-screen-2xl w-full flex flex-row p-4">
-        <div className="px-4 flex flex-row items-center justify-center">
+        <div className="lg:px-4 sm:px-2 flex flex-row items-center justify-center">
           <SVGAssets.MainLogoIcon className="h-8 w-8 mr-4" />
-          <div className="text-white">
+          <div className="text-white sm:hidden md:block">
             <div>Shoes</div>
             <div>Commerce</div>
           </div>
         </div>
-        <div className="flex flex-1 px-12">
+        <div className="flex flex-1 lg:px-12 sm:px-2">
           <div
             className={`w-full h-full justify-center items-center flex flex-row border px-4 rounded-md transition-all duration-200 ${
               focus.searchInput ? "border-app-primary" : "border-app-secondary"
@@ -44,13 +44,13 @@ const Navbar = () => {
             </div>
           </div>
         </div>
-        <div className="px-4 flex flex-row items-center justify-center">
+        <div className="lg:px-4 sm:px-2 flex flex-row items-center justify-center">
           <div className="mr-4 cursor-pointer">
             <SVGAssets.CartIcon className="h-6 w-6" />
           </div>
           <div className="cursor-pointer flex flex-row text-white">
             <SVGAssets.FullnameIcon className="h-6 w-6 fill-app-white mr-2" />{" "}
-            <div>Hello</div>
+            <div className="sm:hidden md:block">Hello</div>
           </div>
         </div>
       </div>

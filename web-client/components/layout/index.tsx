@@ -1,4 +1,3 @@
-import { NextPage } from "next";
 import React from "react";
 import Navbar from "../navbar";
 
@@ -8,9 +7,11 @@ interface IPropsLayout {
 
 const Layout = ({ children }: IPropsLayout) => {
   return (
-    <div className="min-h-screen w-screen bg-app-bg-primary flex flex-col items-center">
+    <div className="min-h-screen w-screen bg-app-bg-primary font-poppins flex items-center flex-col">
       <Navbar />
-      <div className="max-w-screen-2xl w-full py-4 px-8">{children}</div>
+      <div className="max-w-screen-2xl w-full py-4 sm:px-4 lg:px-8">
+        {children}
+      </div>
     </div>
   );
 };
