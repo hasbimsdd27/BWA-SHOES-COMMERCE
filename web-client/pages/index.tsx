@@ -3,23 +3,24 @@ import { useCallback, useEffect, useRef } from "react";
 import SVGAssets from "../assets/svg";
 import Layout from "../components/layout";
 
+interface IProduct {
+  id: string;
+  name: string;
+  price: number;
+  descriptiom: number;
+  category_id: string;
+  Galeries: { id: string; url: string }[];
+  Category: { id: string; name: string };
+}
 interface IPropsHome {
   data: {
-    total_pages: number;
-    current_page: number;
-    limit: number;
-    total_data: number;
-    data: {
-      id: string;
-      name: string;
-      price: number;
-      descriptiom: number;
-      category_id: string;
-      Galeries: { id: string; url: string }[];
-      Category: { id: string; name: string };
-    }[];
+    new_arrival: IProduct[];
+    popular_products: IProduct[];
   };
-  error: string;
+  error: {
+    isError: boolean;
+    errorMessage: string;
+  };
 }
 
 const Home: NextPage<IPropsHome> = ({ data, error }) => {
@@ -141,10 +142,13 @@ const Home: NextPage<IPropsHome> = ({ data, error }) => {
   return (
     <Layout>
       <div className="mt-8">
-        {error !== "" ? (
+        {error.isError ? (
           <div className="w-full flex items-center justify-center">
-            <div className="p-4 text-app-white text-xl bg-app-primary rounded-md">
-              {error}
+            <div className="p-8 text-white bg-app-primary rounded-md">
+              <div className="text-center mb-4">
+                <span className="text-5xl ">😭</span>
+              </div>
+              <div className="text-center">{error.errorMessage}</div>
             </div>
           </div>
         ) : (
@@ -173,7 +177,7 @@ const Home: NextPage<IPropsHome> = ({ data, error }) => {
                     className="flex flex-row flex-nowrap max-w-full"
                     id={"popular-item-wrapper"}
                   >
-                    {data.data.map((item, index) => (
+                    {data.popular_products.map((item, index) => (
                       <div
                         id={`popular-item-${index}`}
                         key={index}
@@ -255,7 +259,7 @@ const Home: NextPage<IPropsHome> = ({ data, error }) => {
                     className="flex flex-row flex-nowrap max-w-full"
                     id={"new-arrival-item-wrapper"}
                   >
-                    {data.data.map((item, index) => (
+                    {data.new_arrival.map((item, index) => (
                       <div
                         id={`new-arrival-item-${index}`}
                         key={index}
@@ -323,31 +327,33 @@ const Home: NextPage<IPropsHome> = ({ data, error }) => {
 Home.getInitialProps = async (ctx: NextPageContext) => {
   const props: IPropsHome = {
     data: {
-      total_pages: 0,
-      current_page: 0,
-      limit: 0,
-      total_data: 0,
-      data: [],
+      new_arrival: [],
+      popular_products: [],
     },
-    error: "",
+    error: {
+      isError: false,
+      errorMessage: "",
+    },
   };
 
   try {
     const res = await fetch(
-      `${process.env.NEXT_PUBLIC_API_URL}/products?limit=10`
+      `${process.env.NEXT_PUBLIC_API_URL}/products/landing`
     );
     if (res.status >= 400) {
       const json = await res.json();
       throw new Error(json.message);
     } else {
       const json = await res.json();
-      props.data = json.data;
+      props.data.popular_products = json.data.popular_products;
+      props.data.new_arrival = json.data.new_arrival;
     }
   } catch (error) {
+    props.error.isError = true;
     if (error instanceof Error) {
-      props.error = error.message;
+      props.error.errorMessage = error.message;
     }
-    props.error = "something went wrong";
+    props.error.errorMessage = "something went wrong";
   }
 
   return props;

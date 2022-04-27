@@ -10,13 +10,14 @@ import (
 func SetupRouter(app *fiber.App) {
 	api := app.Group("/api")
 
+	api.Get("/products/landing", controllers.GetCustomProduct)
 	api.Get("/products", controllers.GetAllProducts)
 	api.Get("/product/:id", controllers.GetDetailProduct)
 	api.Post("/product", controllers.CreateProduct)
 	api.Put("/product/:id", controllers.UpdateProduct)
 	api.Delete("/product/:id", controllers.DeleteProduct)
 
-	api.Get("/categories", middlewares.MiddlewareUser, controllers.GetAllCategory)
+	api.Get("/categories", controllers.GetAllCategory)
 	api.Get("/category/:id", middlewares.MiddlewareUser, controllers.GetDetailCategory)
 	api.Post("/category", middlewares.MiddlewareUser, middlewares.IsAdmin, controllers.CreateCategory)
 	api.Put("/category/:id", middlewares.MiddlewareUser, middlewares.IsAdmin, controllers.UpdateCategory)

@@ -25,3 +25,7 @@ func UpdateProduct(c *fiber.Ctx) error {
 func DeleteProduct(c *fiber.Ctx) error {
 	return productRepositories.DeleteProduct(c)
 }
+
+func GetCustomProduct(c *fiber.Ctx) error {
+	return productRepositories.GetCustomProduct(c)
+}

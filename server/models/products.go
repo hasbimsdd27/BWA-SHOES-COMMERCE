@@ -16,6 +16,8 @@ type Products struct {
 	CategoryId  string            `gorm:"type:VARCHAR(255)" json:"category_id"`
 	Galeries    []ProductGaleries `gorm:"foreignKey:ProductId"`
 	Category    ProductCategories `gorm:"foreignKey:CategoryId"`
+	Rating      float32           `json:"rating"`
+	Purchased   int               `json:"purchased"`
 	CreatedAt   time.Time
 	UpdatedAt   time.Time
 	DeletedAt   gorm.DeletedAt `json:"-"`

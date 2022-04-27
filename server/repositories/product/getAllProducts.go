@@ -16,7 +16,7 @@ type QueryData struct {
 	PriceFrom   int    `query:"price_from"`
 	PriceTo     int    `query:"price_to"`
 	Tags        string `query:"tags"`
-	Category    int    `query:"category"`
+	Category    string `query:"category"`
 	Page        int    `query:"page"`
 }
 
@@ -66,7 +66,7 @@ func AllProducts(c *fiber.Ctx) error {
 		base = base.Where("tags like ?", "%"+query.Tags+"%")
 	}
 
-	if query.Category != 0 {
+	if query.Category != "" {
 		base = base.Where("category_id = ?", query.Category)
 	}
 
