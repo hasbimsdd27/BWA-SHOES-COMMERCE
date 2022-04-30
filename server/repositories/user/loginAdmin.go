@@ -53,7 +53,7 @@ func LoginAdmin(c *fiber.Ctx) error {
 
 	if err := db.Where("email = ?", payloadLogin.Email).First(&user).Error; err != nil {
 		if err.Error() == "record not found" {
-			return c.Status(400).JSON(fiber.Map{
+			return c.Status(404).JSON(fiber.Map{
 				"status":  "error",
 				"message": "user not exist",
 			})
@@ -66,7 +66,7 @@ func LoginAdmin(c *fiber.Ctx) error {
 	}
 
 	if err := bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(payloadLogin.Password)); err != nil {
-		return c.Status(400).JSON(fiber.Map{
+		return c.Status(404).JSON(fiber.Map{
 			"status":  "error",
 			"message": "user not exist",
 		})

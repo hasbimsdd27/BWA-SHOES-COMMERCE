@@ -3,6 +3,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import "sweetalert2/src/sweetalert2.scss";
+import AuthWrapper from "./components/authWrapper";
 
 const Login = lazy(() => import("./pages/login"));
 const Dashboard = lazy(() => import("./pages/dashboard"));
@@ -26,16 +27,18 @@ function App() {
         <BrowserRouter>
           <Routes>
             <Route path="/login" element={<Login />} />
-            <Route path="/dashboard" element={<Dashboard />} />
-            <Route path="/category" element={<Category />} />
-            <Route path="/product">
-              <Route path=":id" element={<ProductAdd />} />
-              <Route path="add" element={<ProductAdd />} />
-              <Route index element={<Product />} />
+            <Route element={<AuthWrapper />}>
+              <Route path="/dashboard" element={<Dashboard />} />
+              <Route path="/category" element={<Category />} />
+              <Route path="/product">
+                <Route path=":id" element={<ProductAdd />} />
+                <Route path="add" element={<ProductAdd />} />
+                <Route index element={<Product />} />
+              </Route>
+              <Route path="/order" element={<Order />} />
+              <Route path="/chat" element={<Chat />} />
+              <Route path="*" element={<NotFound />} />
             </Route>
-            <Route path="/order" element={<Order />} />
-            <Route path="/chat" element={<Chat />} />
-            <Route path="*" element={<NotFound />} />
           </Routes>
         </BrowserRouter>
         <ToastContainer />

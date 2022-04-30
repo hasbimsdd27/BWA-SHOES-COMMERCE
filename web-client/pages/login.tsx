@@ -1,20 +1,11 @@
+import { useRouter } from "next/router";
 import React, { useRef, useState } from "react";
-import Swal from "sweetalert2";
-import { LoginService } from "../../service/auth";
-import { useNavigate } from "react-router-dom";
-import { SVGAssets } from "../../assets";
+import SVGAssets from "../assets/svg";
 
 function Login() {
-  const navigate = useNavigate();
-  const [focus, setFocus] = useState<{ [name: string]: boolean }>({
-    email: false,
-    password: false,
-  });
-
-  const [error, setError] = useState<{ [name: string]: boolean }>({
-    password: false,
-    email: false,
-  });
+  const router = useRouter();
+  const [focus, setFocus] = useState<{ [name: string]: boolean }>({});
+  const [error, setError] = useState<{ [name: string]: boolean }>({});
 
   const RegexRef = useRef<{ [name: string]: RegExp }>({
     email: /\S+@\S+\.\S+/,
@@ -48,38 +39,6 @@ function Login() {
     }
   };
 
-  const HandleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    const email = (e.target as any).email.value;
-    const password = (e.target as any).password.value;
-
-    if (!email || !password) {
-      Swal.fire({
-        icon: "error",
-        title: "Oops...",
-        text: "Email or password can't be empty",
-      });
-      return;
-    }
-    try {
-      const response = await LoginService({ email, password });
-      const data = await response.json();
-      if (response.status >= 400) {
-        throw new Error(data.message);
-      }
-      localStorage.setItem("access_token", data.data.access_token);
-      navigate("/dashboard", { replace: true });
-    } catch (error) {
-      if (error instanceof Error) {
-        Swal.fire({
-          icon: "error",
-          title: "Oops...",
-          text: error.message,
-        });
-      }
-    }
-  };
-
   return (
     <div className="w-screen min-h-screen flex items-center justify-center bg-app-bg-primary text-white">
       <div className="">
@@ -87,7 +46,11 @@ function Login() {
           <h1 className="text-2xl font-bold mb-2">Login</h1>
           <p className="text-app-secondary">Sign In to Countinue</p>
         </div>
-        <form onSubmit={HandleSubmit}>
+        <form
+          onSubmit={(e) => {
+            e.preventDefault();
+          }}
+        >
           <div className="mb-8">
             <div className="font-bold mb-2">Email Address</div>
             <div
@@ -106,7 +69,7 @@ function Login() {
               id="email-input"
             >
               <div className="mr-2">
-                <SVGAssets.EmailIcon />
+                <SVGAssets.EmailIcon className="h-4 w-4" />
               </div>
               <div className="flex flex-1">
                 <input
@@ -143,7 +106,7 @@ function Login() {
               id="password-input"
             >
               <div className="mr-2">
-                <SVGAssets.PasswordIcon />
+                <SVGAssets.PasswordIcon className="h-4 w-4" />
               </div>
               <div className="flex flex-1">
                 <input
@@ -168,6 +131,17 @@ function Login() {
             </button>
           </div>
         </form>
+        <div className="mt-4 text-sm text-center text-app-secondary">
+          Doesn't have account?{" "}
+          <span
+            onClick={() => {
+              router.push("/register");
+            }}
+            className="text-app-info cursor-pointer"
+          >
+            Register
+          </span>
+        </div>
       </div>
     </div>
   );

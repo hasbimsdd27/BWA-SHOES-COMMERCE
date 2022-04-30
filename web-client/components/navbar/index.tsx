@@ -1,6 +1,8 @@
 import { useRouter } from "next/router";
 import React, { useState } from "react";
 import SVGAssets from "../../assets/svg";
+import { getCookie } from "../../utils/cookieHandler";
+import Dropdown from "../Dropdown";
 
 const Navbar = () => {
   const [focus, setFocus] = useState({
@@ -72,8 +74,44 @@ const Navbar = () => {
             <SVGAssets.CartIcon className="h-6 w-6" />
           </div>
           <div className="cursor-pointer flex flex-row text-white">
-            <SVGAssets.FullnameIcon className="h-6 w-6 fill-app-white mr-2" />{" "}
-            <div className="sm:hidden md:block">Hello</div>
+            <Dropdown
+              renderLabel={
+                <div className="flex flex-row">
+                  {" "}
+                  <SVGAssets.FullnameIcon className="h-6 w-6 fill-app-white mr-2" />{" "}
+                  <div className="sm:hidden md:block">Hello</div>
+                </div>
+              }
+              id="navbar-button"
+            >
+              {!!getCookie("user_token") ? (
+                <>
+                  {" "}
+                  <div
+                    className="text-app-bg-primary text-center p-2 transition-all duration-200 hover:bg-app-bg-primary hover:text-app-white cursor-pointer"
+                    onClick={() => router.push("/profile")}
+                  >
+                    Profile
+                  </div>
+                  <div
+                    className="text-app-danger text-center p-2 hover:bg-app-bg-primary hover:text-app-white cursor-pointer transition-all duration-200"
+                    onClick={() => {}}
+                  >
+                    Logout
+                  </div>
+                </>
+              ) : (
+                <>
+                  {" "}
+                  <div
+                    className="text-app-info text-center p-2 hover:bg-app-bg-primary hover:text-app-white cursor-pointer transition-all duration-200"
+                    onClick={() => router.push("/login")}
+                  >
+                    Login
+                  </div>
+                </>
+              )}
+            </Dropdown>
           </div>
         </div>
       </div>

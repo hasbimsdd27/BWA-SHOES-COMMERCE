@@ -119,7 +119,25 @@ function Layout({ children }: IpropsLayout) {
 
               <div>
                 {" "}
-                <SVGAssets.ExitButton className="cursor-pointer" />
+                <SVGAssets.ExitButton
+                  className="cursor-pointer"
+                  onClick={() =>
+                    Swal.fire({
+                      title: "Are you sure?",
+                      text: "Are you sure to Log out?",
+                      icon: "warning",
+                      showCancelButton: true,
+                      reverseButtons: true,
+                      confirmButtonColor: "#d33",
+                      confirmButtonText: "Logout",
+                    }).then((result) => {
+                      if (result.isConfirmed) {
+                        localStorage.clear();
+                        navigate("/login", { replace: true });
+                      }
+                    })
+                  }
+                />
               </div>
             </div>
           </div>

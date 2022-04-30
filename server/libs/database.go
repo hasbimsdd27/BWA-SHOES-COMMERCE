@@ -56,6 +56,7 @@ func ConnectDB() {
 		&models.ProductGaleries{},
 		&models.Transactions{},
 		&models.TransactionItems{},
+		&models.UserAddress{},
 	)
 
 	fmt.Println("Connection opened to database")

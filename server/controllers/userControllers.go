@@ -17,3 +17,7 @@ func Login(c *fiber.Ctx) error {
 func LoginAdmin(c *fiber.Ctx) error {
 	return userRepositories.LoginAdmin(c)
 }
+
+func Userprofile(c *fiber.Ctx) error {
+	return userRepositories.UserProfile(c)
+}

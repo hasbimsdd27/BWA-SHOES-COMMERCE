@@ -12,6 +12,7 @@ import ExitButton from "./Exit_Button.svg";
 import CloseIcon from "./close_icon.svg";
 import SearchIcon from "./Search_Icon.svg";
 import ChevronRight from "./chevron-right.svg";
+import PhoneIcon from "./Phone_Icon.svg";
 
 const SVGAssets = {
   CartIcon,
@@ -25,7 +26,9 @@ const SVGAssets = {
   UsernameIcon,
   ExitButton,
   CloseIcon,
-  SearchIcon,ChevronRight
+  SearchIcon,
+  ChevronRight,
+  PhoneIcon,
 };
 
 export default SVGAssets;
