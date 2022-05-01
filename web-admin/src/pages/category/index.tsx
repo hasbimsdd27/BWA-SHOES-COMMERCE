@@ -37,6 +37,8 @@ function Dashboard() {
   });
   const [loadingSubmit, setLoadingSubmit] = useState<boolean>(false);
 
+  const refTimeout = useRef<any>();
+
   const responseAllCategories = useRef<IResponseCategories>({
     data: [],
     limit: 0,
@@ -249,8 +251,12 @@ function Dashboard() {
   };
 
   useEffect(() => {
-    FetchAllCategory(1, "");
-  }, [FetchAllCategory]);
+    setLoading(true);
+    clearTimeout(refTimeout.current);
+    refTimeout.current = setTimeout(() => {
+      FetchAllCategory(1, "");
+    }, 10);
+  }, []);
 
   return (
     <Layout>

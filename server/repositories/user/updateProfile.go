@@ -15,6 +15,7 @@ type PayloadProfile struct {
 	Phone           string `json:"phone"`
 	Fullname        string `json:"fullname"`
 	AddressID       int    `json:"address_id"`
+	AddressName     string `json:"address_name"`
 	AddressType     string `json:"address_type"`
 	CompleteAddress string `json:"complete_address"`
 }
@@ -24,7 +25,7 @@ type ResponseData struct {
 	UserAddress models.UserAddress `json:"user_address"`
 }
 
-func UserProfile(c *fiber.Ctx) error {
+func UpdateUserProfile(c *fiber.Ctx) error {
 	var userData models.Users
 	var userAddress models.UserAddress
 	var payload PayloadProfile
@@ -140,6 +141,10 @@ func UserProfile(c *fiber.Ctx) error {
 		userAddress.CompleteAddress = payload.CompleteAddress
 	}
 
+	if payload.AddressName != "" {
+		userAddress.AddressName = payload.AddressName
+	}
+
 	db.Save(&userData)
 
 	if userAddress.ID != uuid.Nil {
@@ -147,7 +152,12 @@ func UserProfile(c *fiber.Ctx) error {
 	} else {
 		userAddress.ID = uuid.New()
 		userAddress.UserID = userData.ID
-		db.Save(&userAddress)
+		if err := db.Create(&userAddress).Error; err != nil {
+			return c.Status(500).JSON(fiber.Map{
+				"status": "error",
+				"data":   err.Error(),
+			})
+		}
 	}
 
 	response.UserData = userData

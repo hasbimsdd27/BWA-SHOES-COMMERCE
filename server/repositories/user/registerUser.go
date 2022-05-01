@@ -4,6 +4,7 @@ import (
 	"server/libs"
 	"server/models"
 	"server/utils"
+	"strings"
 
 	"github.com/dgrijalva/jwt-go"
 	"github.com/gofiber/fiber/v2"
@@ -35,6 +36,7 @@ type ResponseRegister struct {
 	AccessToken string `json:"access_token"`
 	Role        string `json:"role"`
 	Fullname    string `json:"fullname"`
+	Phone       string `json:"phone"`
 }
 
 func Register(c *fiber.Ctx) error {
@@ -73,15 +75,6 @@ func Register(c *fiber.Ctx) error {
 		})
 	}
 
-	if err := db.Where("username = ?", payload.Username).First(&UserData).Error; err != nil {
-		if err.Error() != "record not found" {
-			return c.Status(500).JSON(fiber.Map{
-				"status": "error",
-				"data":   err.Error(),
-			})
-		}
-	}
-
 	if UserData.ID != uuid.Nil {
 		errorMessage = append(errorMessage, ErrorMessage{
 			Field:   "username",
@@ -103,13 +96,6 @@ func Register(c *fiber.Ctx) error {
 		})
 	}
 
-	if payload.Username == "" {
-		errorMessage = append(errorMessage, ErrorMessage{
-			Field:   "username",
-			Message: "username can't be empty",
-		})
-	}
-
 	if len(errorMessage) > 0 {
 		return c.Status(400).JSON(fiber.Map{
 			"status": "error",
@@ -118,9 +104,10 @@ func Register(c *fiber.Ctx) error {
 	}
 	UserData.ID = uuid.New()
 	UserData.Email = payload.Email
-	UserData.Username = payload.Username
 	UserData.Password = payload.Password
 	UserData.Phone = payload.Phone
+	UserData.Name = payload.Fullname
+	UserData.Username = strings.ToLower(strings.Split(payload.Fullname, " ")[0] + utils.GenerateRandomString(6))
 
 	if payload.Role == "ADMIN" {
 		UserData.Role = "ADMIN"

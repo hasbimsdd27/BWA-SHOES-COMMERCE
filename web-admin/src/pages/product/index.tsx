@@ -48,6 +48,8 @@ function Dashboard() {
     limit: 10,
   });
 
+  const refTimeout = useRef<any>();
+
   const GetAllProducts = useCallback(async () => {
     try {
       setLoading(true);
@@ -111,8 +113,12 @@ function Dashboard() {
   };
 
   useEffect(() => {
-    GetAllProducts();
-  }, [GetAllProducts]);
+    setLoading(true);
+    clearTimeout(refTimeout.current);
+    refTimeout.current = setTimeout(() => {
+      GetAllProducts();
+    }, 10);
+  }, []);
 
   return (
     <Layout>

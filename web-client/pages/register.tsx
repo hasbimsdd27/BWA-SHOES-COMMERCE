@@ -1,11 +1,15 @@
 import { useRouter } from "next/router";
 import React, { useRef, useState } from "react";
+import Swal from "sweetalert2";
 import SVGAssets from "../assets/svg";
+import Button from "../components/button";
+import { setCookie } from "../utils/cookieHandler";
 
 function Login() {
   const router = useRouter();
   const [focus, setFocus] = useState<{ [name: string]: boolean }>({});
   const [error, setError] = useState<{ [name: string]: boolean }>({});
+  const [loading, setLoading] = useState<boolean>(false);
 
   const RegexRef = useRef<{ [name: string]: RegExp }>({
     email: /\S+@\S+\.\S+/,
@@ -50,6 +54,49 @@ function Login() {
     }
   };
 
+  const HandleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    const fullname = (e.target as any).fullname.value;
+    const phone = (e.target as any).phoneNumber.value;
+    const email = (e.target as any).email.value;
+    const password = (e.target as any).password.value;
+
+    setLoading(true);
+    try {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/register`, {
+        method: "POST",
+        headers: { "Content-type": "application/json;charset=UTF-8" },
+        body: JSON.stringify({
+          fullname,
+          phone,
+          email,
+          password,
+        }),
+      });
+      if (res.status >= 400) {
+        const json = await res.json();
+        Swal.fire({
+          icon: "error",
+          title: "Oops...",
+          text: json.message,
+        });
+        setLoading(false);
+      } else {
+        const json = await res.json();
+        setCookie("access_token", json.data.access_token);
+        router.replace("/complete-address");
+      }
+    } catch (error) {
+      if (error instanceof Error) {
+        Swal.fire({
+          icon: "error",
+          title: "Oops...",
+          text: error.message,
+        });
+      }
+      setLoading(false);
+    }
+  };
+
   return (
     <div className="w-screen min-h-screen flex items-center justify-center bg-app-bg-primary text-white">
       <div className="py-8">
@@ -60,6 +107,7 @@ function Login() {
         <form
           onSubmit={(e) => {
             e.preventDefault();
+            HandleSubmit(e);
           }}
         >
           <div className="mb-8">
@@ -254,9 +302,19 @@ function Login() {
             </div>
           </div>
           <div>
-            <button className="w-full p-4 bg-app-primary rounded-md">
+            <Button
+              className="w-full p-4 bg-app-primary rounded-md disabled:bg-opacity-30"
+              disabled={
+                Object.values(error)
+                  .map((item) => item)
+                  .filter((item) => item === true).length > 0
+              }
+              onClick={() => {}}
+              loading={loading}
+              type="submit"
+            >
               Sign Up
-            </button>
+            </Button>
           </div>
         </form>
         <div className="mt-4 text-sm text-center text-app-secondary">
