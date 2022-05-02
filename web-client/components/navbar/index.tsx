@@ -1,7 +1,10 @@
 import { useRouter } from "next/router";
 import React, { useState } from "react";
+import { useSelector } from "react-redux";
+import Swal from "sweetalert2";
 import SVGAssets from "../../assets/svg";
-import { getCookie } from "../../utils/cookieHandler";
+import { IRootReducer } from "../../redux/reducer/rootReducer";
+import { deleteAllCookies } from "../../utils/cookieHandler";
 import Dropdown from "../Dropdown";
 
 const Navbar = () => {
@@ -9,8 +12,29 @@ const Navbar = () => {
     searchInput: false,
   });
   const router = useRouter();
+
+  const userData = useSelector((reducer: IRootReducer) => reducer.AuthReducer);
+
+  const HandleLogout = () => {
+    Swal.fire({
+      title: "Are you sure?",
+      text: "Are you sure to Log out?",
+      icon: "warning",
+      showCancelButton: true,
+      reverseButtons: true,
+      confirmButtonColor: "#d33",
+      confirmButtonText: "Logout",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        localStorage.clear();
+        deleteAllCookies();
+        router.replace("/login");
+      }
+    });
+  };
+
   return (
-    <div className="w-screen flex flex-row items-center justify-center h-20">
+    <div className="w-screen flex flex-row items-center justify-center h-16 z-10">
       <div
         className="max-w-screen-2xl w-full flex flex-row p-4 fixed bg-app-bg-primary"
         style={{ width: "inherit" }}
@@ -79,12 +103,14 @@ const Navbar = () => {
                 <div className="flex flex-row">
                   {" "}
                   <SVGAssets.FullnameIcon className="h-6 w-6 fill-app-white mr-2" />{" "}
-                  <div className="sm:hidden md:block">Hello</div>
+                  <div className="sm:hidden md:block">
+                    {userData?.name || "Hello"}
+                  </div>
                 </div>
               }
               id="navbar-button"
             >
-              {!!getCookie("user_token") ? (
+              {!!userData.name ? (
                 <>
                   {" "}
                   <div
@@ -95,7 +121,9 @@ const Navbar = () => {
                   </div>
                   <div
                     className="text-app-danger text-center p-2 hover:bg-app-bg-primary hover:text-app-white cursor-pointer transition-all duration-200"
-                    onClick={() => {}}
+                    onClick={() => {
+                      HandleLogout();
+                    }}
                   >
                     Logout
                   </div>

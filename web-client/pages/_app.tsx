@@ -4,6 +4,10 @@ import "nprogress/nprogress.css";
 import Router from "next/router";
 import NProgress from "nprogress";
 import { useEffect } from "react";
+import { Provider } from "react-redux";
+import { Store } from "../redux/reducer/rootReducer";
+import { getCookie } from "../utils/cookieHandler";
+import { getUserProfile } from "../service/auth";
 
 function MyApp({ Component, pageProps }: AppProps) {
   useEffect(() => {
@@ -14,6 +18,10 @@ function MyApp({ Component, pageProps }: AppProps) {
     Router.events.on("routeChangeComplete", handleRouteDone);
     Router.events.on("routeChangeError", handleRouteDone);
 
+    if (!!getCookie("access_token")) {
+      getUserProfile();
+    }
+
     return () => {
       // Make sure to remove the event handler on unmount!
       Router.events.off("routeChangeStart", handleRouteStart);
@@ -22,9 +30,11 @@ function MyApp({ Component, pageProps }: AppProps) {
     };
   }, []);
   return (
-    <div className="overflow-x-hidden">
-      <Component {...pageProps} />
-    </div>
+    <Provider store={Store}>
+      <div className="overflow-x-hidden">
+        <Component {...pageProps} />
+      </div>
+    </Provider>
   );
 }
 

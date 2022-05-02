@@ -11,13 +11,14 @@ interface IDropdownProps {
 const Dropdown = ({ renderLabel, children, width, id }: IDropdownProps) => {
   const [show, setShow] = useState(false);
 
-  const heightRef = useRef<number>(0);
   const wrapperRef = useRef<any>(null);
   const isShowed = useRef<boolean>(false);
 
   const toggleShow = () => {
-    isShowed.current = !show;
-    setShow((prev) => !prev);
+    setShow((prev) => {
+      isShowed.current = !prev;
+      return !prev;
+    });
   };
 
   const handleClickOutside = (event: any) => {
@@ -31,15 +32,6 @@ const Dropdown = ({ renderLabel, children, width, id }: IDropdownProps) => {
   };
 
   useEffect(() => {
-    setTimeout(() => {
-      const element = document.querySelector(`#${id}`);
-      if (!!element) {
-        heightRef.current =
-          (document.querySelector(`#${id}`) as HTMLDivElement).scrollHeight +
-          16;
-      }
-    }, 100);
-
     // Bind the event listener
     document.addEventListener("mousedown", handleClickOutside);
     return () => {
@@ -52,13 +44,11 @@ const Dropdown = ({ renderLabel, children, width, id }: IDropdownProps) => {
     <div className="relative select-none" id={`${id}-wrapper`} ref={wrapperRef}>
       <div onClick={() => toggleShow()}>{renderLabel}</div>
       <div
-        className={`absolute right-0 bg-app-white overflow-hidden mt-2 transition-all rounded-md duration-200 ${
-          show ? "py-2" : ""
-        }`}
-        style={{ width, height: (show ? heightRef.current : 0) + "px" }}
+        className={`absolute right-0 overflow-auto mt-2 transition-all duration-200`}
+        style={{ width, height: show ? "300px" : "0px", maxHeight: "300px" }}
         id={id}
       >
-        {children}
+        <div className="bg-white rounded-md py-2">{children}</div>
       </div>
     </div>
   );

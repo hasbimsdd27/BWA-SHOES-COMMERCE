@@ -17,6 +17,27 @@ function Pagination({
     for (let i = 1; i <= totalPage; i++) {
       pages.push(String(i));
     }
+  } else if (totalPage > 5 && currentPage <= 3 && totalPage - currentPage > 2) {
+    pages = ["1", "2", "3", "4", "...", String(totalPage)];
+  } else if (totalPage > 5 && currentPage > 3 && totalPage - currentPage > 2) {
+    pages = [
+      "1",
+      "...",
+      String(currentPage - 1),
+      String(currentPage),
+      String(currentPage + 1),
+      "...",
+      String(totalPage),
+    ];
+  } else if (totalPage > 5 && currentPage > 3 && totalPage - currentPage <= 2) {
+    pages = [
+      "1",
+      "...",
+      String(totalPage - 3),
+      String(totalPage - 2),
+      String(totalPage - 1),
+      String(totalPage),
+    ];
   }
 
   return (

@@ -1,4 +1,6 @@
 import type { NextPage, NextPageContext } from "next";
+import Head from "next/head";
+import { useRouter } from "next/router";
 import { useCallback, useEffect, useRef } from "react";
 import SVGAssets from "../assets/svg";
 import Layout from "../components/layout";
@@ -31,6 +33,8 @@ const Home: NextPage<IPropsHome> = ({ data, error }) => {
       arrival: any;
     };
   } = useRef({ popular: null, arrival: null });
+
+  const router = useRouter();
 
   const HandleClickChevron = useCallback(
     (
@@ -141,185 +145,196 @@ const Home: NextPage<IPropsHome> = ({ data, error }) => {
 
   return (
     <Layout>
-      <div className="mt-8">
-        {error.isError ? (
-          <div className="w-full flex items-center justify-center">
-            <div className="p-8 text-white bg-app-primary rounded-md">
-              <div className="text-center mb-4">
-                <span className="text-5xl ">😭</span>
-              </div>
-              <div className="text-center">{error.errorMessage}</div>
-            </div>
-          </div>
-        ) : (
-          <>
-            <div className="mb-8">
-              <div className="text-xl text-white mb-4">Popular Products</div>
-              <div className="py-2 flex flex-row items-center justify-center">
-                <div className="text-app-primary">
-                  <SVGAssets.ChevronRight
-                    className="h-8 w-8 transform rotate-180 cursor-pointer"
-                    onClick={() => {
-                      clearInterval(IntervalRef.current.popular);
-                      HandleClickChevron(
-                        "#popular-wrapper",
-                        wrapperWidth.current["#popular-item-wrapper"],
-                        wrapperWidth.current["#popular-item-0"],
-                        "left"
-                      );
-                      setIntervalPopular();
-                    }}
-                  />
+      <>
+        <Head>
+          <title>Main Page</title>
+        </Head>
+        <div className="mt-8">
+          {error.isError ? (
+            <div className="w-full flex items-center justify-center">
+              <div className="p-8 text-white bg-app-primary rounded-md">
+                <div className="text-center mb-4">
+                  <span className="text-5xl ">😭</span>
                 </div>
+                <div className="text-center">{error.errorMessage}</div>
+              </div>
+            </div>
+          ) : (
+            <>
+              <div className="mb-8">
+                <div className="text-xl text-white mb-4">Popular Products</div>
+                <div className="py-2 flex flex-row items-center justify-center">
+                  <div className="text-app-primary">
+                    <SVGAssets.ChevronRight
+                      className="h-8 w-8 transform rotate-180 cursor-pointer"
+                      onClick={() => {
+                        clearInterval(IntervalRef.current.popular);
+                        HandleClickChevron(
+                          "#popular-wrapper",
+                          wrapperWidth.current["#popular-item-wrapper"],
+                          wrapperWidth.current["#popular-item-0"],
+                          "left"
+                        );
+                        setIntervalPopular();
+                      }}
+                    />
+                  </div>
 
-                <div className="overflow-hidden" id="popular-wrapper">
-                  <div
-                    className="flex flex-row flex-nowrap max-w-full"
-                    id={"popular-item-wrapper"}
-                  >
-                    {data.popular_products.map((item, index) => (
-                      <div
-                        id={`popular-item-${index}`}
-                        key={index}
-                        className="sm:px-2 lg:px-4"
-                      >
+                  <div className="overflow-hidden" id="popular-wrapper">
+                    <div
+                      className="flex flex-row flex-nowrap max-w-full"
+                      id={"popular-item-wrapper"}
+                    >
+                      {data.popular_products.map((item, index) => (
                         <div
-                          className="flex flex-col bg-app-white rounded-md "
-                          style={{ minWidth: "215px", minHeight: "278px" }}
+                          id={`popular-item-${index}`}
+                          key={index}
+                          className="sm:px-2 lg:px-4 cursor-pointer"
+                          onClick={() => {
+                            router.push(`/product/${item.id}`);
+                          }}
                         >
                           <div
-                            className="flex flex-1 rounded-tl-md rounded-tr-md"
-                            style={{
-                              backgroundImage: `url("${item.Galeries[0].url}")`,
-                              backgroundPosition: "center",
-                              backgroundSize: "cover",
-                              backgroundRepeat: "no-repeat",
-                            }}
-                          ></div>
-                          <div className="flex flex-col p-4">
-                            <div className="mb-2 text-app-secondary">
-                              {item.Category.name}
-                            </div>
-                            <div className="mb-2 text-xl font-bold">
-                              {item.name.slice(0, 12)}
-                              {item.name.length > 12 && "..."}
-                            </div>
-                            <div className="text-blue-400 font-bold">
-                              {item.price.toLocaleString("id-ID", {
-                                style: "currency",
-                                currency: "IDR",
-                                maximumFractionDigits: 2,
-                                minimumFractionDigits: 2,
-                              })}
+                            className="flex flex-col bg-app-white rounded-md "
+                            style={{ minWidth: "215px", minHeight: "278px" }}
+                          >
+                            <div
+                              className="flex flex-1 rounded-tl-md rounded-tr-md"
+                              style={{
+                                backgroundImage: `url("${item.Galeries[0].url}")`,
+                                backgroundPosition: "center",
+                                backgroundSize: "cover",
+                                backgroundRepeat: "no-repeat",
+                              }}
+                            ></div>
+                            <div className="flex flex-col p-4">
+                              <div className="mb-2 text-app-secondary">
+                                {item.Category.name}
+                              </div>
+                              <div className="mb-2 text-xl font-bold">
+                                {item.name.slice(0, 12)}
+                                {item.name.length > 12 && "..."}
+                              </div>
+                              <div className="text-blue-400 font-bold">
+                                {item.price.toLocaleString("id-ID", {
+                                  style: "currency",
+                                  currency: "IDR",
+                                  maximumFractionDigits: 2,
+                                  minimumFractionDigits: 2,
+                                })}
+                              </div>
                             </div>
                           </div>
                         </div>
-                      </div>
-                    ))}
+                      ))}
+                    </div>
+                  </div>
+                  <div className="text-app-primary">
+                    <SVGAssets.ChevronRight
+                      className="h-8 w-8 cursor-pointer"
+                      onClick={() => {
+                        clearInterval(IntervalRef.current.popular);
+                        HandleClickChevron(
+                          "#popular-wrapper",
+                          wrapperWidth.current["#popular-item-wrapper"],
+                          wrapperWidth.current["#popular-item-0"],
+                          "right"
+                        );
+                        setIntervalPopular();
+                      }}
+                    />
                   </div>
                 </div>
-                <div className="text-app-primary">
-                  <SVGAssets.ChevronRight
-                    className="h-8 w-8 cursor-pointer"
-                    onClick={() => {
-                      clearInterval(IntervalRef.current.popular);
-                      HandleClickChevron(
-                        "#popular-wrapper",
-                        wrapperWidth.current["#popular-item-wrapper"],
-                        wrapperWidth.current["#popular-item-0"],
-                        "right"
-                      );
-                      setIntervalPopular();
-                    }}
-                  />
-                </div>
               </div>
-            </div>
-            <div className="mb-8 select-none">
-              <div className="text-xl text-white mb-4">New Arrival</div>
-              <div className="py-2 flex flex-row items-center justify-center">
-                <div className="text-app-primary">
-                  <SVGAssets.ChevronRight
-                    className="h-8 w-8 transform rotate-180 cursor-pointer"
-                    onClick={() => {
-                      clearInterval(IntervalRef.current.arrival);
-                      HandleClickChevron(
-                        "#new-arrival-wrapper",
-                        wrapperWidth.current["#new-arrival-item-wrapper"],
-                        wrapperWidth.current["#new-arrival-item-0"],
-                        "left"
-                      );
-                      setIntervalPopular();
-                    }}
-                  />
-                </div>
+              <div className="mb-8 select-none">
+                <div className="text-xl text-white mb-4">New Arrival</div>
+                <div className="py-2 flex flex-row items-center justify-center">
+                  <div className="text-app-primary">
+                    <SVGAssets.ChevronRight
+                      className="h-8 w-8 transform rotate-180 cursor-pointer"
+                      onClick={() => {
+                        clearInterval(IntervalRef.current.arrival);
+                        HandleClickChevron(
+                          "#new-arrival-wrapper",
+                          wrapperWidth.current["#new-arrival-item-wrapper"],
+                          wrapperWidth.current["#new-arrival-item-0"],
+                          "left"
+                        );
+                        setIntervalPopular();
+                      }}
+                    />
+                  </div>
 
-                <div className="overflow-hidden" id="new-arrival-wrapper">
-                  <div
-                    className="flex flex-row flex-nowrap max-w-full"
-                    id={"new-arrival-item-wrapper"}
-                  >
-                    {data.new_arrival.map((item, index) => (
-                      <div
-                        id={`new-arrival-item-${index}`}
-                        key={index}
-                        className="sm:px-2 lg:px-4"
-                      >
+                  <div className="overflow-hidden" id="new-arrival-wrapper">
+                    <div
+                      className="flex flex-row flex-nowrap max-w-full"
+                      id={"new-arrival-item-wrapper"}
+                    >
+                      {data.new_arrival.map((item, index) => (
                         <div
-                          className="flex flex-col bg-app-white rounded-md "
-                          style={{ minWidth: "215px", minHeight: "278px" }}
+                          id={`new-arrival-item-${index}`}
+                          key={index}
+                          className="sm:px-2 lg:px-4 cursor-pointer"
+                          onClick={() => {
+                            router.push(`/product/${item.id}`);
+                          }}
                         >
                           <div
-                            className="flex flex-1 rounded-tl-md rounded-tr-md"
-                            style={{
-                              backgroundImage: `url("${item.Galeries[0].url}")`,
-                              backgroundPosition: "center",
-                              backgroundSize: "cover",
-                              backgroundRepeat: "no-repeat",
-                            }}
-                          ></div>
-                          <div className="flex flex-col p-4">
-                            <div className="mb-2 text-app-secondary">
-                              {item.Category.name}
-                            </div>
-                            <div className="mb-2 text-xl font-bold">
-                              {item.name.slice(0, 12)}
-                              {item.name.length > 12 && "..."}
-                            </div>
-                            <div className="text-blue-400 font-bold">
-                              {item.price.toLocaleString("id-ID", {
-                                style: "currency",
-                                currency: "IDR",
-                                maximumFractionDigits: 2,
-                                minimumFractionDigits: 2,
-                              })}
+                            className="flex flex-col bg-app-white rounded-md "
+                            style={{ minWidth: "215px", minHeight: "278px" }}
+                          >
+                            <div
+                              className="flex flex-1 rounded-tl-md rounded-tr-md"
+                              style={{
+                                backgroundImage: `url("${item.Galeries[0].url}")`,
+                                backgroundPosition: "center",
+                                backgroundSize: "cover",
+                                backgroundRepeat: "no-repeat",
+                              }}
+                            ></div>
+                            <div className="flex flex-col p-4">
+                              <div className="mb-2 text-app-secondary">
+                                {item.Category.name}
+                              </div>
+                              <div className="mb-2 text-xl font-bold">
+                                {item.name.slice(0, 12)}
+                                {item.name.length > 12 && "..."}
+                              </div>
+                              <div className="text-blue-400 font-bold">
+                                {item.price.toLocaleString("id-ID", {
+                                  style: "currency",
+                                  currency: "IDR",
+                                  maximumFractionDigits: 2,
+                                  minimumFractionDigits: 2,
+                                })}
+                              </div>
                             </div>
                           </div>
                         </div>
-                      </div>
-                    ))}
+                      ))}
+                    </div>
+                  </div>
+                  <div className="text-app-primary">
+                    <SVGAssets.ChevronRight
+                      className="h-8 w-8 cursor-pointer"
+                      onClick={() => {
+                        clearInterval(IntervalRef.current.arrival);
+                        HandleClickChevron(
+                          "#new-arrival-wrapper",
+                          wrapperWidth.current["#new-arrival-item-wrapper"],
+                          wrapperWidth.current["#new-arrival-item-0"],
+                          "right"
+                        );
+                        setIntervalArrival();
+                      }}
+                    />
                   </div>
                 </div>
-                <div className="text-app-primary">
-                  <SVGAssets.ChevronRight
-                    className="h-8 w-8 cursor-pointer"
-                    onClick={() => {
-                      clearInterval(IntervalRef.current.arrival);
-                      HandleClickChevron(
-                        "#new-arrival-wrapper",
-                        wrapperWidth.current["#new-arrival-item-wrapper"],
-                        wrapperWidth.current["#new-arrival-item-0"],
-                        "right"
-                      );
-                      setIntervalArrival();
-                    }}
-                  />
-                </div>
               </div>
-            </div>
-          </>
-        )}
-      </div>
+            </>
+          )}
+        </div>
+      </>
     </Layout>
   );
 };

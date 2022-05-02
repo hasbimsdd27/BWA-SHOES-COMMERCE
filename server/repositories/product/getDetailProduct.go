@@ -10,6 +10,8 @@ import (
 
 func DetailProduct(c *fiber.Ctx) error {
 	var product models.Products
+	var productOrigin models.UserAddress
+	responseDetailProduct := map[string]interface{}{}
 
 	db := libs.DB
 	id := c.Params("id")
@@ -35,9 +37,23 @@ func DetailProduct(c *fiber.Ctx) error {
 		})
 	}
 
+	if err := db.Where("user_id = ?", product.CreatedBy).First(&productOrigin).Error; err != nil {
+		if err.Error() != "record not found" {
+
+			return c.Status(500).JSON(fiber.Map{
+				"status":  "error",
+				"message": err.Error(),
+			})
+		}
+
+	}
+
+	responseDetailProduct["product"] = product
+	responseDetailProduct["origin"] = productOrigin
+
 	return c.JSON(fiber.Map{
 		"status": "success",
-		"data":   product,
+		"data":   responseDetailProduct,
 	})
 
 }

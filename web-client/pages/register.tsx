@@ -1,11 +1,15 @@
+import { NextPage, NextPageContext } from "next";
+import Head from "next/head";
 import { useRouter } from "next/router";
 import React, { useRef, useState } from "react";
 import Swal from "sweetalert2";
 import SVGAssets from "../assets/svg";
 import Button from "../components/button";
-import { setCookie } from "../utils/cookieHandler";
+import { getUserProfile } from "../service/auth";
+import { getCookie, setCookie } from "../utils/cookieHandler";
+import ParseSSRCookie from "../utils/ssrCookieParser";
 
-function Login() {
+const Register: NextPage = () => {
   const router = useRouter();
   const [focus, setFocus] = useState<{ [name: string]: boolean }>({});
   const [error, setError] = useState<{ [name: string]: boolean }>({});
@@ -83,6 +87,7 @@ function Login() {
       } else {
         const json = await res.json();
         setCookie("access_token", json.data.access_token);
+        getUserProfile();
         router.replace("/complete-address");
       }
     } catch (error) {
@@ -99,6 +104,9 @@ function Login() {
 
   return (
     <div className="w-screen min-h-screen flex items-center justify-center bg-app-bg-primary text-white">
+      <Head>
+        <title>Login</title>
+      </Head>
       <div className="py-8">
         <div className="mb-8">
           <h1 className="text-2xl font-bold mb-2">Register</h1>
@@ -331,6 +339,24 @@ function Login() {
       </div>
     </div>
   );
-}
+};
 
-export default Login;
+Register.getInitialProps = (ctx: NextPageContext) => {
+  let accesstoken = "";
+  if (ctx.req) {
+    accesstoken = ParseSSRCookie(ctx, "access_token");
+  } else {
+    accesstoken = getCookie("access_token");
+  }
+
+  console.log(accesstoken);
+  if (!!accesstoken && !!ctx.res) {
+    ctx.res.writeHead(301, {
+      Location: "/",
+    });
+    ctx.res.end();
+  }
+  return { data: "" };
+};
+
+export default Register;
