@@ -21,6 +21,7 @@ interface IParamsDetail {
         id: string;
         name: string;
       };
+      weight: number;
     };
     origin: {
       address_name: string;
@@ -82,7 +83,7 @@ const Products: NextPage<IParamsDetail> = ({ data, error }) => {
           origin_type: addressType,
           destination: data.origin.address_id,
           destination_type: data.origin.address_type,
-          weight: 1,
+          weight: data.product.weight,
           courier: ["jne", "pos", "sicepat", "jnt", "wahana", "tiki"],
         };
 
@@ -344,6 +345,7 @@ Products.getInitialProps = async (ctx: NextPageContext) => {
           id: "",
           name: "",
         },
+        weight: 0,
       },
       origin: {
         address_name: "",

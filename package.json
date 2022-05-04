@@ -7,7 +7,8 @@
     "dev-server": "cd ./server && nodemon --exec go run main.go --signal SIGTERM",
     "dev-web-admin": "cd ./web-admin && npm run dev",
     "dev-web-client": "cd ./web-client && npm run dev",
-    "dev-ongkir-scrapper":"cd ./cekongkir-scrapper && nodemon app.js"
+    "dev-ongkir-scrapper": "cd ./cekongkir-scrapper && nodemon app.js",
+    "start-dev":"node ./start-dev.js"
   },
   "author": "",
   "license": "ISC"

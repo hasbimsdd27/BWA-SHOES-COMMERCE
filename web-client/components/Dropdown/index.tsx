@@ -44,7 +44,7 @@ const Dropdown = ({ renderLabel, children, width, id }: IDropdownProps) => {
     <div className="relative select-none" id={`${id}-wrapper`} ref={wrapperRef}>
       <div onClick={() => toggleShow()}>{renderLabel}</div>
       <div
-        className={`absolute right-0 overflow-auto mt-2 transition-all duration-200`}
+        className={`absolute right-0 overflow-hidden mt-2 transition-all duration-200`}
         style={{ width, height: show ? "300px" : "0px", maxHeight: "300px" }}
         id={id}
       >

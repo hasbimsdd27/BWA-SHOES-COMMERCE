@@ -33,4 +33,8 @@ func SetupRouter(app *fiber.App) {
 	api.Post("/assets", middlewares.MiddlewareUser, middlewares.IsAdmin, controllers.UploadAssets)
 	api.Delete("/assets/:imageName", middlewares.MiddlewareUser, middlewares.IsAdmin, controllers.DeleteAssets)
 
+	api.Post("/cart", middlewares.MiddlewareUser, controllers.CreateUpdateCart)
+	api.Delete("/cart/:id", middlewares.MiddlewareUser, controllers.DeleteCart)
+	api.Get("/carts", middlewares.MiddlewareUser, controllers.GetCarts)
+
 }

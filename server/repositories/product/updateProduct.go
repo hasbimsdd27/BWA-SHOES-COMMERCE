@@ -152,6 +152,10 @@ func UpdateProduct(c *fiber.Ctx) error {
 		product.Price = payload.Price
 	}
 
+	if payload.Weight != 0 {
+		product.Weight = payload.Weight
+	}
+
 	db.Save(&product)
 
 	db.Preload("Category").Preload("Galeries").Where("id = ?", product.ID).First(&product)

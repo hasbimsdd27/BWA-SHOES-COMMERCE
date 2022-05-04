@@ -16,5 +16,5 @@ type UserAddress struct {
 	CompleteAddress string    `gorm:"type:TEXT" json:"complete_address"`
 	CreatedAt       time.Time
 	UpdatedAt       time.Time
-	DeletedAt       gorm.DeletedAt
+	DeletedAt       gorm.DeletedAt `json:"-"`
 }

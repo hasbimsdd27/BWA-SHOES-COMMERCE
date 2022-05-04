@@ -29,6 +29,12 @@ func MiddlewareUser(c *fiber.Ctx) error {
 	})
 
 	if err != nil {
+		if err.Error() == "token contains an invalid number of segments" {
+			return c.Status(401).JSON(fiber.Map{
+				"status":  "error",
+				"message": "token not exist",
+			})
+		}
 		return c.Status(500).JSON(fiber.Map{
 			"status":  "error",
 			"message": err.Error(),

@@ -1,19 +1,19 @@
 import { AnyAction } from "redux";
 import { ThunkDispatch } from "redux-thunk";
 import { IAuthReducer } from "../reducer/authReducer";
-import { RESET_AUTH, SET_AUTH } from "../type/auth";
+import { RESET_CART, SET_CART } from "../type/cart";
 
-export const SetAuthRedux =
+export const SetCartRedux =
   (payload: IAuthReducer) => (dispatch: ThunkDispatch<{}, {}, AnyAction>) => {
     dispatch({
-      type: SET_AUTH,
+      type: SET_CART,
       payload,
     });
   };
 
-export const ResetAuthRedux =
+export const ResetCartRedux =
   () => (dispatch: ThunkDispatch<{}, {}, AnyAction>) => {
     dispatch({
-      type: RESET_AUTH,
+      type: RESET_CART,
     });
   };

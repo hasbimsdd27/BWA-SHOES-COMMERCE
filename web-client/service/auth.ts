@@ -1,7 +1,6 @@
 import { getCookie } from "../utils/cookieHandler";
 import { Store } from "../redux/reducer/rootReducer";
-import { SET_AUTH } from "../redux/type/auth";
-import { SetAuthRedux } from "../redux/action/setAuth";
+import { SetAuthRedux } from "../redux/action/auth";
 
 export const getUserProfile = async () => {
   const response = await fetch(

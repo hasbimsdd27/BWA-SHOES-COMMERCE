@@ -14,6 +14,7 @@ const Navbar = () => {
   const router = useRouter();
 
   const userData = useSelector((reducer: IRootReducer) => reducer.AuthReducer);
+  const cartData = useSelector((reducer: IRootReducer) => reducer.CartReducer);
 
   const HandleLogout = () => {
     Swal.fire({
@@ -32,6 +33,11 @@ const Navbar = () => {
       }
     });
   };
+
+  const TotalCart = cartData.data.reduce(
+    (total, item) => (total += item.product.price * item.quantity),
+    0
+  );
 
   return (
     <div className="w-screen flex flex-row items-center justify-center h-16 z-10">
@@ -95,7 +101,66 @@ const Navbar = () => {
         </div>
         <div className="lg:px-4 sm:px-2 flex flex-row items-center justify-center">
           <div className="mr-4 cursor-pointer">
-            <SVGAssets.CartIcon className="h-6 w-6" />
+            <Dropdown
+              renderLabel={<SVGAssets.CartIcon className="h-6 w-6" />}
+              id="cart-button"
+              width="300px"
+            >
+              <div className="px-2">
+                {cartData.data.length === 0 ? (
+                  <div className="text-app-info text-center">
+                    Your Cart Is Empty
+                  </div>
+                ) : (
+                  <div>
+                    <div
+                      className="w-full overflow-auto"
+                      style={{ maxHeight: "180px" }}
+                    >
+                      {cartData.data.map((item, index) => (
+                        <div key={index} className="flex flex-row my-2">
+                          <div
+                            className="w-16 h-16 rounded-md mr-2"
+                            style={{
+                              backgroundImage: `url("${item.product.Galeries[0].url}")`,
+                              backgroundPosition: "center",
+                              backgroundSize: "cover",
+                              backgroundRepeat: "no-repeat",
+                            }}
+                          ></div>
+                          <div className="flex flex-1 flex-col">
+                            <div className="">
+                              <div className="font-bold">
+                                {item.product.name} ({item.quantity})
+                              </div>
+                              <div className="text-sm text-app-secondary">
+                                {item.product.Category.name}
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                    <div className="flex flex-row py-2  border-t-2 border-t-app-bg-input">
+                      <div className="flex flex-1 font-bold">Total</div>
+                      <div>
+                        {TotalCart.toLocaleString("id-ID", {
+                          style: "currency",
+                          currency: "IDR",
+                          maximumFractionDigits: 2,
+                          minimumFractionDigits: 2,
+                        })}
+                      </div>
+                    </div>
+                    <div className="mb-2">
+                      <button className="w-full bg-app-primary text-white rounded-md py-2 cursor-pointer">
+                        Checkout
+                      </button>
+                    </div>
+                  </div>
+                )}
+              </div>
+            </Dropdown>
           </div>
           <div className="cursor-pointer flex flex-row text-white">
             <Dropdown
@@ -108,7 +173,7 @@ const Navbar = () => {
                   </div>
                 </div>
               }
-              id="navbar-button"
+              id="profile-button"
             >
               {!!userData.name ? (
                 <>

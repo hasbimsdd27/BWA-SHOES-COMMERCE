@@ -6,6 +6,7 @@ import Swal from "sweetalert2";
 import SVGAssets from "../assets/svg";
 import Button from "../components/button";
 import { getUserProfile } from "../service/auth";
+import { getCartData } from "../service/cart";
 import { getCookie, setCookie } from "../utils/cookieHandler";
 import ParseSSRCookie from "../utils/ssrCookieParser";
 
@@ -87,7 +88,6 @@ const Register: NextPage = () => {
       } else {
         const json = await res.json();
         setCookie("access_token", json.data.access_token);
-        getUserProfile();
         router.replace("/complete-address");
       }
     } catch (error) {

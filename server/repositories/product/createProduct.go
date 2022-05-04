@@ -15,6 +15,7 @@ type Payload struct {
 	Tags        string   `json:"tags"`
 	CategoryId  string   `json:"category_id"`
 	Galeries    []string `json:"galeries"`
+	Weight      float32  `json:"weight"`
 }
 
 type ErrorMessage struct {
@@ -56,6 +57,13 @@ func CreateProduct(c *fiber.Ctx) error {
 		errors = append(errors, *newError)
 	}
 
+	if payload.Weight <= 0 {
+		newError := new(ErrorMessage)
+		newError.Field = "weight"
+		newError.Message = "weight must be greater than 0"
+		errors = append(errors, *newError)
+	}
+
 	if payload.CategoryId == "" {
 		newError := new(ErrorMessage)
 		newError.Field = "category_id"
@@ -92,6 +100,7 @@ func CreateProduct(c *fiber.Ctx) error {
 		Tags:        payload.Tags,
 		Description: payload.Description,
 		CategoryId:  payload.CategoryId,
+		Weight:      payload.Weight,
 	}
 
 	if err := db.Create(&product).Error; err != nil {

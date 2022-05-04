@@ -18,5 +18,5 @@ type Users struct {
 	UserAddress UserAddress `gorm:"foreignKey:UserID"`
 	CreatedAt   time.Time
 	UpdatedAt   time.Time
-	DeletedAt   gorm.DeletedAt
+	DeletedAt   gorm.DeletedAt `json:"-"`
 }

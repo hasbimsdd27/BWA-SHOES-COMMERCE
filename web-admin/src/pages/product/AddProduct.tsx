@@ -24,6 +24,7 @@ function AddProduct() {
     product_tags: false,
     product_category: false,
     product_description: false,
+    product_weight: false,
   });
   const [categories, setCategories] = useState<{ id: string; name: string }[]>(
     []
@@ -38,6 +39,7 @@ function AddProduct() {
     product_category:
       /[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}/,
     product_description: /[\w\W]{12,}/,
+    product_weight: /^(0*[1-9][0-9]*(\.[0-9]+)?|0+\.[0-9]*[1-9][0-9]*)$/,
   };
 
   const Validation = (
@@ -87,6 +89,7 @@ function AddProduct() {
       "product_category",
       "product_tags",
       "product_description",
+      "product_weight",
     ];
 
     fieldList.forEach((item) => {
@@ -122,6 +125,7 @@ function AddProduct() {
         tags: (e.target as any)["product_tags"]?.value,
         category_id: (e.target as any)["product_category"]?.value,
         galeries: imageLink,
+        weight: (e.target as any)["product_weight"]?.value,
       };
       let response: any;
       if (!!params.id) {
@@ -220,7 +224,7 @@ function AddProduct() {
       if (response.status >= 400) {
         throw new Error(responseData.message);
       }
-      const data = responseData.data;
+      const data = responseData.data.product;
       InputValueSetter("input[name='product_name']", data.name);
       InputValueSetter("input[name='product_price']", data.price);
       InputValueSetter("input[name='product_tags']", data.tags);
@@ -229,6 +233,7 @@ function AddProduct() {
         "textarea[name='product_description']",
         data.description
       );
+      InputValueSetter("input[name='product_weight']", data.weight);
       setImageLink(data.Galeries.map((item: any) => item.url));
     } catch (error) {
       if (error instanceof Error) {
@@ -335,7 +340,23 @@ function AddProduct() {
                 ))}
               </select>
             </div>
+            <div className="flex flex-col">
+              <label className="mb-2">
+                Product Weight <span className="text-app-danger">*</span>
+              </label>
+              <input
+                onChange={Validation}
+                className={`bg-transparent p-2 rounded-md border-2 outline-none  transition-all duration-200 ${
+                  error["product_weight"]
+                    ? "border-app-danger"
+                    : "focus:border-app-primary border-app-secondary "
+                }`}
+                name="product_weight"
+                placeholder="Enter product weight"
+              />
+            </div>{" "}
           </div>
+
           <div className="flex flex-col mb-6">
             <label className="mb-2">
               Product Description <span className="text-app-danger">*</span>

@@ -4,6 +4,7 @@ import React, { useEffect, useRef, useState } from "react";
 import Swal from "sweetalert2";
 import Button from "../components/button";
 import { getUserProfile } from "../service/auth";
+import { getCartData } from "../service/cart";
 import { getCookie } from "../utils/cookieHandler";
 import ParseSSRCookie from "../utils/ssrCookieParser";
 
@@ -172,6 +173,8 @@ const CompleteAddress: NextPage<IPropsCompleteAddress> = ({
       data.UserAddress.address_type !== "" &&
       data.UserAddress.complete_address !== ""
     ) {
+      getUserProfile();
+      getCartData();
       router.replace("/");
     }
   }, [data]);

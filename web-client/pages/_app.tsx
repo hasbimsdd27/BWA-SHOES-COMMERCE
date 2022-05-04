@@ -8,6 +8,7 @@ import { Provider } from "react-redux";
 import { Store } from "../redux/reducer/rootReducer";
 import { getCookie } from "../utils/cookieHandler";
 import { getUserProfile } from "../service/auth";
+import { getCartData } from "../service/cart";
 
 function MyApp({ Component, pageProps }: AppProps) {
   useEffect(() => {
@@ -20,6 +21,7 @@ function MyApp({ Component, pageProps }: AppProps) {
 
     if (!!getCookie("access_token")) {
       getUserProfile();
+      getCartData();
     }
 
     return () => {

@@ -18,6 +18,7 @@ type Products struct {
 	Category    ProductCategories `gorm:"foreignKey:CategoryId"`
 	Rating      float32           `json:"rating"`
 	Purchased   int               `json:"purchased"`
+	Weight      float32           `json:"weight"`
 	CreatedBy   uuid.UUID         `gorm:"type:VARCHAR(255)" json:"created_by"`
 	CreatedAt   time.Time
 	UpdatedAt   time.Time
