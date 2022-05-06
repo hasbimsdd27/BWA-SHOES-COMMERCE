@@ -99,7 +99,7 @@ const Navbar = () => {
             <Dropdown
               renderLabel={<SVGAssets.CartIcon className="h-6 w-6" />}
               id="cart-button"
-              width="300px"
+              width="225px"
             >
               <div className="px-2">
                 {cartData.data.length === 0 ? (

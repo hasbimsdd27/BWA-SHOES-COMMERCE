@@ -25,31 +25,44 @@ function Checkout() {
   let totalPrice = 0;
 
   const deleteSelected = async () => {
-    setDeleteLoading(true);
-    Promise.all(
-      selected.map(
-        async (item: string) =>
-          await fetch(`${process.env.NEXT_PUBLIC_API_URL}/cart/${item}`, {
-            method: "DELETE",
-            headers: {
-              Authorization: getCookie("access_token"),
-              "Content-type": "application/json;charset=UTF-8",
-            },
+    Swal.fire({
+      title: "Are you sure?",
+      text: `Are you sure want to these items?`,
+      icon: "warning",
+      showCancelButton: true,
+      reverseButtons: true,
+      confirmButtonColor: "#d33",
+      confirmButtonText: "Delete",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        setDeleteLoading(true);
+        Promise.all(
+          selected.map(
+            async (item: string) =>
+              await fetch(`${process.env.NEXT_PUBLIC_API_URL}/cart/${item}`, {
+                method: "DELETE",
+                headers: {
+                  Authorization: getCookie("access_token"),
+                  "Content-type": "application/json;charset=UTF-8",
+                },
+              })
+          )
+        )
+          .then(() => {
+            getCartData();
+            setSelected([]);
           })
-      )
-    )
-      .then(() => {
-        getCartData();
-      })
-      .finally(() => {
-        setDeleteLoading(false);
+          .finally(() => {
+            setDeleteLoading(false);
 
-        Swal.fire({
-          icon: "success",
-          title: "Success",
-          text: "product deleted from your cart",
-        });
-      });
+            Swal.fire({
+              icon: "success",
+              title: "Success",
+              text: "product deleted from your cart",
+            });
+          });
+      }
+    });
   };
 
   selected.forEach((item) => {
@@ -149,11 +162,12 @@ function Checkout() {
               ))}
             </div>
             <div
-              className={`fixed bottom-5 border-t-2 border-app-white py-5 transition-all duration-200 transform ${
+              className={`fixed bottom-5 pb-5 transition-all duration-200 transform sm:pr-8 md:pr-0 ${
                 selected.length > 0 ? "translate-y-0" : "translate-y-52"
               }`}
               style={{ width: "inherit" }}
             >
+              <div className="border-t-2 border-app-white mb-5" />
               <div className="flex flex-row text-xl mb-2">
                 <div className="flex flex-1">Total</div>
                 <div className="font-bold">
@@ -165,9 +179,9 @@ function Checkout() {
                   })}
                 </div>
               </div>
-              <div className="flex flex-row">
+              <div className="flex md:flex-row sm:flex-col">
                 <Button
-                  className="w-full bg-app-danger py-2 rounded-md cursor-pointer mr-2"
+                  className="w-full bg-app-danger py-2 rounded-md cursor-pointer sm:mb-2 md:mb-0 md:mr-1"
                   type="button"
                   onClick={() => {
                     deleteSelected();
@@ -176,7 +190,7 @@ function Checkout() {
                 >
                   <span>Delete ({selected.length})</span>
                 </Button>
-                <button className="ml-2 w-full bg-app-primary py-2 rounded-md cursor-pointer font-bold">
+                <button className="w-full bg-app-primary py-2 rounded-md cursor-pointer font-bold sm:ml-0 md:ml-1">
                   <span> Checkout ({selected.length})</span>
                 </button>
               </div>

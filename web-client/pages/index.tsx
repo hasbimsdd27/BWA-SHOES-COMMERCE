@@ -180,7 +180,10 @@ const Home: NextPage<IPropsHome> = ({ data, error }) => {
                     />
                   </div>
 
-                  <div className="overflow-hidden" id="popular-wrapper">
+                  <div
+                    className="overflow-hidden sm:w-[230px] md:w-[460px] lg:w-full"
+                    id="popular-wrapper"
+                  >
                     <div
                       className="flex flex-row flex-nowrap max-w-full"
                       id={"popular-item-wrapper"}
@@ -265,7 +268,10 @@ const Home: NextPage<IPropsHome> = ({ data, error }) => {
                     />
                   </div>
 
-                  <div className="overflow-hidden" id="new-arrival-wrapper">
+                  <div
+                    className="overflow-hidden sm:w-[230px] md:w-[460px] lg:w-full"
+                    id="new-arrival-wrapper"
+                  >
                     <div
                       className="flex flex-row flex-nowrap max-w-full"
                       id={"new-arrival-item-wrapper"}
