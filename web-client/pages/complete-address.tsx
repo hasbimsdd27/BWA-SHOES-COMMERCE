@@ -1,4 +1,5 @@
 import { NextPage, NextPageContext } from "next";
+import Head from "next/head";
 import { useRouter } from "next/router";
 import React, { useEffect, useRef, useState } from "react";
 import Swal from "sweetalert2";
@@ -49,7 +50,7 @@ const CompleteAddress: NextPage<IPropsCompleteAddress> = ({
       setLoadingQuery(true);
       setAddressesList([]);
       const response = await fetch(
-        `${process.env.NEXT_PUBLIC_API_ONGKIR_URL}/search?location=${name}`
+        `${process.env.NEXT_PUBLIC_API_URL}/ongkir/search?location=${name}`
       );
       const data = await response.json();
       if (data.status === "success") {
@@ -180,127 +181,138 @@ const CompleteAddress: NextPage<IPropsCompleteAddress> = ({
   }, [data]);
 
   return (
-    <div className="w-screen min-h-screen flex justify-center bg-app-bg-primary text-white">
-      <div className="mt-16">
-        <div className="mb-8">
-          <h1 className="text-2xl font-bold mb-2">Complete Your Address</h1>
-          <p className="text-app-secondary">
-            Complete your address to make your experience better
-          </p>
-        </div>
-        <form onSubmit={handleSubmit}>
+    <>
+      <Head>
+        <title>Main Page</title>
+      </Head>
+      <div className="w-screen min-h-screen flex justify-center bg-app-bg-primary text-white">
+        <div className="mt-16">
           <div className="mb-8">
-            <div className="mb-2">Select City or Subdistrict</div>
-            <div className="relative w-full ">
-              <div
-                className={`border-2 rounded-md ${
-                  !!error["address-query"]
-                    ? "border-app-danger"
-                    : focus
-                    ? "border-app-primary"
-                    : "border-app-secondary"
-                }`}
-              >
-                <div className="flex flex-row items-center">
-                  <input
-                    name="address-query"
-                    className="bg-transparent w-full p-2 outline-none"
-                    placeholder="Enter City or Subdistrict"
-                    onChange={HandleSearch}
-                    onFocus={() => setFocus(true)}
-                    onBlur={() => setFocus(false)}
-                  />
-                  <div className="px-2">
-                    {loadingQuery && (
-                      <>
-                        <svg
-                          className={`animate-spin h-5 w-5 text-white`}
-                          xmlns="http://www.w3.org/2000/svg"
-                          fill="none"
-                          viewBox="0 0 24 24"
-                        >
-                          <circle
-                            className="opacity-25"
-                            cx="12"
-                            cy="12"
-                            r="10"
-                            stroke="currentColor"
-                            strokeWidth="4"
-                          ></circle>
-                          <path
-                            className="opacity-75"
-                            fill="currentColor"
-                            d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-                          ></path>
-                        </svg>
-                      </>
-                    )}
+            <h1 className="text-2xl font-bold mb-2">Complete Your Address</h1>
+            <p className="text-app-secondary">
+              Complete your address to make your experience better
+            </p>
+          </div>
+          <form onSubmit={handleSubmit}>
+            <div className="mb-8">
+              <div className="mb-2">Select City or Subdistrict</div>
+              <div className="relative w-full ">
+                <div
+                  className={`border-2 rounded-md ${
+                    !!error["address-query"]
+                      ? "border-app-danger"
+                      : focus
+                      ? "border-app-primary"
+                      : "border-app-secondary"
+                  }`}
+                >
+                  <div className="flex flex-row items-center">
+                    <input
+                      name="address-query"
+                      className="bg-transparent w-full p-2 outline-none"
+                      placeholder="Enter City or Subdistrict"
+                      onChange={HandleSearch}
+                      onFocus={() => setFocus(true)}
+                      onBlur={() => setFocus(false)}
+                    />
+                    <div className="px-2">
+                      {loadingQuery && (
+                        <>
+                          <svg
+                            className={`animate-spin h-5 w-5 text-white`}
+                            xmlns="http://www.w3.org/2000/svg"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                          >
+                            <circle
+                              className="opacity-25"
+                              cx="12"
+                              cy="12"
+                              r="10"
+                              stroke="currentColor"
+                              strokeWidth="4"
+                            ></circle>
+                            <path
+                              className="opacity-75"
+                              fill="currentColor"
+                              d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                            ></path>
+                          </svg>
+                        </>
+                      )}
+                    </div>
                   </div>
+
+                  <input className="" type={"hidden"} name="address-detail" />
                 </div>
 
-                <input className="" type={"hidden"} name="address-detail" />
-              </div>
-
-              <div
-                className={`w-full bg-app-bg-input rounded-md  mt-2 absolute transition-all duration-500 ${
-                  addresslistHeight !== 0
-                    ? "overflow-auto py-2"
-                    : "overflow-hidden"
-                }`}
-                style={{ height: addresslistHeight + "px", maxHeight: "150px" }}
-                id="container-address-wrapper"
-              >
-                {addressesList.length === 0 ? (
-                  <div className="p-2">Not Found</div>
-                ) : (
-                  addressesList.map((item, index) => (
-                    <div
-                      className="p-2 hover:bg-app-primary cursor-pointer"
-                      onClick={() =>
-                        HandleClick(`${item.id}-${item.type}-${item.label}`)
-                      }
-                      key={index}
-                    >
-                      {item.label}
-                    </div>
-                  ))
-                )}
+                <div
+                  className={`w-full bg-app-bg-input rounded-md  mt-2 absolute transition-all duration-500 ${
+                    addresslistHeight !== 0
+                      ? "overflow-auto py-2"
+                      : "overflow-hidden"
+                  }`}
+                  style={{
+                    height: addresslistHeight + "px",
+                    maxHeight: "150px",
+                  }}
+                  id="container-address-wrapper"
+                >
+                  {addressesList.length === 0 ? (
+                    <div className="p-2">Not Found</div>
+                  ) : (
+                    addressesList.map((item, index) => (
+                      <div
+                        className="p-2 hover:bg-app-primary cursor-pointer"
+                        onClick={() =>
+                          HandleClick(`${item.id}-${item.type}-${item.label}`)
+                        }
+                        key={index}
+                      >
+                        {item.label}
+                      </div>
+                    ))
+                  )}
+                </div>
               </div>
             </div>
-          </div>
-          <div className="mb-8">
-            <div className="mb-2">Detail Address</div>
-            <textarea
-              name="detail-address"
-              className={`w-full bg-transparent border-2 ${
-                !!error["detail-address"]
-                  ? "border-app-danger"
-                  : "border-app-secondary focus:border-app-primary"
-              } rounded-md p-2 outline-none `}
-              placeholder="Your Address Detail"
-              onChange={(e) => {
-                if (!!e.target.value) {
-                  setError((prev) => ({ ...prev, ["detail-address"]: false }));
-                }
-              }}
-            />
-          </div>
-          <Button
-            className="w-full p-4 bg-app-primary rounded-md disabled:bg-opacity-30"
-            disabled={
-              Object.values(error)
-                .map((item) => item)
-                .filter((item) => item === true).length > 0
-            }
-            onClick={() => {}}
-            loading={loading}
-            type="submit"
-          >
-            Sumbit
-          </Button>
-        </form>
+            <div className="mb-8">
+              <div className="mb-2">Detail Address</div>
+              <textarea
+                name="detail-address"
+                className={`w-full bg-transparent border-2 ${
+                  !!error["detail-address"]
+                    ? "border-app-danger"
+                    : "border-app-secondary focus:border-app-primary"
+                } rounded-md p-2 outline-none `}
+                placeholder="Your Address Detail"
+                onChange={(e) => {
+                  if (!!e.target.value) {
+                    setError((prev) => ({
+                      ...prev,
+                      ["detail-address"]: false,
+                    }));
+                  }
+                }}
+              />
+            </div>
+            <Button
+              className="w-full p-4 bg-app-primary rounded-md disabled:bg-opacity-30"
+              disabled={
+                Object.values(error)
+                  .map((item) => item)
+                  .filter((item) => item === true).length > 0
+              }
+              onClick={() => {}}
+              loading={loading}
+              type="submit"
+            >
+              Sumbit
+            </Button>
+          </form>
+        </div>
       </div>
-    </div>
+    </>
   );
 };
 

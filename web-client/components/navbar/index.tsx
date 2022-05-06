@@ -34,11 +34,6 @@ const Navbar = () => {
     });
   };
 
-  const TotalCart = cartData.data.reduce(
-    (total, item) => (total += item.product.price * item.quantity),
-    0
-  );
-
   return (
     <div className="w-screen flex flex-row items-center justify-center h-16 z-10">
       <div
@@ -141,20 +136,15 @@ const Navbar = () => {
                         </div>
                       ))}
                     </div>
-                    <div className="flex flex-row py-2  border-t-2 border-t-app-bg-input">
-                      <div className="flex flex-1 font-bold">Total</div>
-                      <div>
-                        {TotalCart.toLocaleString("id-ID", {
-                          style: "currency",
-                          currency: "IDR",
-                          maximumFractionDigits: 2,
-                          minimumFractionDigits: 2,
-                        })}
-                      </div>
-                    </div>
+
                     <div className="mb-2">
-                      <button className="w-full bg-app-primary text-white rounded-md py-2 cursor-pointer">
-                        Checkout
+                      <button
+                        className="w-full bg-app-primary text-white rounded-md py-2 cursor-pointer"
+                        onClick={() => {
+                          router.push("/cart");
+                        }}
+                      >
+                        Show Your Cart
                       </button>
                     </div>
                   </div>

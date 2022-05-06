@@ -4,8 +4,11 @@ import React, { useCallback, useEffect, useRef, useState } from "react";
 import { useSelector } from "react-redux";
 import Swal from "sweetalert2";
 import SVGAssets from "../../assets/svg";
+import Button from "../../components/button";
 import Layout from "../../components/layout";
 import { IRootReducer } from "../../redux/reducer/rootReducer";
+import { getCartData } from "../../service/cart";
+import { getCookie } from "../../utils/cookieHandler";
 
 interface IParamsDetail {
   data: {
@@ -58,6 +61,7 @@ const Products: NextPage<IParamsDetail> = ({ data, error }) => {
     loading: false,
     courrier: [],
   });
+  const [loadingCart, setLoadingCart] = useState(false);
 
   const shippingHeight = useRef<number>(0);
 
@@ -79,19 +83,20 @@ const Products: NextPage<IParamsDetail> = ({ data, error }) => {
           loading: true,
         }));
         const payload = {
-          origin: addressId,
-          origin_type: addressType,
-          destination: data.origin.address_id,
-          destination_type: data.origin.address_type,
-          weight: data.product.weight,
+          destination: addressId,
+          destination_type: addressType,
+          weight: Math.ceil(data.product.weight),
           courier: ["jne", "pos", "sicepat", "jnt", "wahana", "tiki"],
         };
 
         const response = await fetch(
-          `${process.env.NEXT_PUBLIC_API_ONGKIR_URL}/cost`,
+          `${process.env.NEXT_PUBLIC_API_URL}/ongkir/cost`,
           {
             method: "POST",
-            headers: { "Content-type": "application/json;charset=UTF-8" },
+            headers: {
+              "Content-type": "application/json;charset=UTF-8",
+              Authorization: getCookie("access_token"),
+            },
             body: JSON.stringify(payload),
           }
         );
@@ -134,6 +139,40 @@ const Products: NextPage<IParamsDetail> = ({ data, error }) => {
       );
     }
   }, [userData]);
+
+  const HandlePostUpdate = async (e: number, id: string) => {
+    try {
+      setLoadingCart(true);
+      await fetch(`${process.env.NEXT_PUBLIC_API_URL}/cart`, {
+        method: "POST",
+        headers: {
+          Authorization: getCookie("access_token"),
+          "Content-type": "application/json;charset=UTF-8",
+        },
+        body: JSON.stringify({
+          product_id: id,
+          quantity: e,
+        }),
+      });
+
+      getCartData();
+      setLoadingCart(false);
+      Swal.fire({
+        icon: "success",
+        title: "Success",
+        text: "product added to cart",
+      });
+    } catch (error) {
+      if (error instanceof Error) {
+        Swal.fire({
+          icon: "error",
+          title: "Oops...",
+          text: error.message,
+        });
+      }
+      setLoadingCart(false);
+    }
+  };
 
   return (
     <Layout>
@@ -311,14 +350,24 @@ const Products: NextPage<IParamsDetail> = ({ data, error }) => {
                 </div>
                 <div className="flex flex-row">
                   <div className="flex flex-1 items-center justify-end px-2">
-                    <button className="px-2 py-4 bg-app-info rounded-md">
+                    <Button
+                      className="px-2 py-4 bg-app-info rounded-md"
+                      type="button"
+                      onClick={() => {
+                        HandlePostUpdate(1, data.product.id);
+                      }}
+                    >
                       Add to cart
-                    </button>
+                    </Button>
                   </div>
                   <div className="flex flex-1 items-center justify-start px-2">
-                    <button className="px-2 py-4 bg-app-primary rounded-md">
+                    <Button
+                      className="px-2 py-4 bg-app-primary rounded-md"
+                      onClick={() => {}}
+                      type={"button"}
+                    >
                       Buy Now
-                    </button>
+                    </Button>
                   </div>
                 </div>
               </div>

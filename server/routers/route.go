@@ -37,4 +37,7 @@ func SetupRouter(app *fiber.App) {
 	api.Delete("/cart/:id", middlewares.MiddlewareUser, controllers.DeleteCart)
 	api.Get("/carts", middlewares.MiddlewareUser, controllers.GetCarts)
 
+	api.Get("/ongkir/search", middlewares.MiddlewareUser, controllers.QueryArea)
+	api.Post("/ongkir/cost", middlewares.MiddlewareUser, controllers.GetOngkir)
+
 }

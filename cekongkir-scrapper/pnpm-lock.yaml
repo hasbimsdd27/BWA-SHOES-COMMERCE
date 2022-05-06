@@ -5,12 +5,14 @@ specifiers:
   cors: ^2.8.5
   express: ^4.18.0
   node-fetch: '2'
+  response-time: ^2.3.2
 
 dependencies:
   cheerio: 1.0.0-rc.10
   cors: 2.8.5
   express: 4.18.0
   node-fetch: 2.6.7
+  response-time: 2.3.2
 
 packages:
 
@@ -131,6 +133,11 @@ packages:
     resolution: {integrity: sha512-bC7ElrdJaJnPbAP+1EotYvqZsb3ecl5wi6Bfi6BJTUcNowp6cvspg0jXznRTKDjm/E7AdgFBVeAPVMNcKGsHMA==}
     dependencies:
       ms: 2.0.0
+    dev: false
+
+  /depd/1.1.2:
+    resolution: {integrity: sha1-m81S4UwJd2PnSbJ0xDRu0uVgtak=}
+    engines: {node: '>= 0.6'}
     dev: false
 
   /depd/2.0.0:
@@ -391,6 +398,11 @@ packages:
       ee-first: 1.1.1
     dev: false
 
+  /on-headers/1.0.2:
+    resolution: {integrity: sha512-pZAE+FJLoyITytdqK0U5s+FIpjN0JP3OzFi/u8Rx+EV5/W+JTWGXG8xFzevE7AjBfDqHv/8vL8qQsIhHnqRkrA==}
+    engines: {node: '>= 0.8'}
+    dev: false
+
   /parse5-htmlparser2-tree-adapter/6.0.1:
     resolution: {integrity: sha512-qPuWvbLgvDGilKc5BoicRovlT4MtYT6JfJyBOMDsKoiT+GiuP5qyrPCnR9HcPECIJJmZh5jRndyNThnhhb/vlA==}
     dependencies:
@@ -438,6 +450,14 @@ packages:
       http-errors: 2.0.0
       iconv-lite: 0.4.24
       unpipe: 1.0.0
+    dev: false
+
+  /response-time/2.3.2:
+    resolution: {integrity: sha1-/6cbq5UtYvfB1Jt0NDVfvGjf/Fo=}
+    engines: {node: '>= 0.8.0'}
+    dependencies:
+      depd: 1.1.2
+      on-headers: 1.0.2
     dev: false
 
   /safe-buffer/5.2.1:

@@ -27,11 +27,15 @@ func AddToCart(c *fiber.Ctx) error {
 		})
 	}
 
-	if err = db.Where("product_id = ?", payload.ProductID).First(&cartData).Error; err != nil {
-		return c.Status(500).JSON(fiber.Map{
-			"status":  "error",
-			"message": err.Error(),
-		})
+	if err = db.Where("product_id = ? AND user_id = ?", payload.ProductID, c.Locals("user_id")).First(&cartData).Error; err != nil {
+
+		if err.Error() != "record not found" {
+			return c.Status(500).JSON(fiber.Map{
+				"status":  "error",
+				"message": err.Error(),
+			})
+		}
+
 	}
 
 	if payload.ProductID == "" || payload.Quantity <= 0 {
@@ -45,11 +49,7 @@ func AddToCart(c *fiber.Ctx) error {
 
 	cartData.UserID = uuid.Must(uuid.Parse(userID))
 	cartData.ProductID = uuid.Must(uuid.Parse(payload.ProductID))
-	if cartData.ID != uuid.Nil {
-		cartData.Quantity = cartData.Quantity + payload.Quantity
-	} else {
-		cartData.Quantity = payload.Quantity
-	}
+	cartData.Quantity = payload.Quantity
 
 	if cartData.ID == uuid.Nil {
 		cartData.ID = uuid.New()

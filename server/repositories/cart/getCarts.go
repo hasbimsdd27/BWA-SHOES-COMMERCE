@@ -2,6 +2,7 @@ package cartRepositories
 
 import (
 	"fmt"
+	"log"
 	"server/libs"
 	"server/models"
 	"strings"
@@ -21,6 +22,7 @@ func GetCarts(c *fiber.Ctx) error {
 	var products []models.Products
 	var carts []models.UserCart
 	var productIds []string
+	var responseData []ResponseCart
 
 	db := libs.DB
 	if err := db.Where("user_id = ?", c.Locals("user_id")).Find(&carts).Error; err != nil {
@@ -30,31 +32,37 @@ func GetCarts(c *fiber.Ctx) error {
 		})
 	}
 
-	for _, item := range carts {
-		productIds = append(productIds, `"`+item.ProductID.String()+`"`)
-	}
+	log.Println(len(carts))
 
-	if err := db.Preload("Category").Preload("Galeries").Where(fmt.Sprintf("id IN (%s)", strings.Join(productIds, ","))).Find(&products).Error; err != nil {
-		return c.Status(500).JSON(fiber.Map{
-			"status":  "error",
-			"message": err.Error(),
-		})
-	}
+	if len(carts) > 0 {
 
-	tempObjProduct := map[string]models.Products{}
+		for _, item := range carts {
+			productIds = append(productIds, `"`+item.ProductID.String()+`"`)
+		}
 
-	for _, item := range products {
-		tempObjProduct[item.ID.String()] = item
-	}
+		if err := db.Preload("Category").Preload("Galeries").Where(fmt.Sprintf("id IN (%s)", strings.Join(productIds, ","))).Find(&products).Error; err != nil {
+			return c.Status(500).JSON(fiber.Map{
+				"status":  "error",
+				"message": err.Error(),
+			})
+		}
 
-	var responseData []ResponseCart
+		tempObjProduct := map[string]models.Products{}
 
-	for _, item := range carts {
-		responseData = append(responseData, ResponseCart{
-			ID:       item.ID,
-			Quantity: item.Quantity,
-			Product:  tempObjProduct[item.ProductID.String()],
-		})
+		for _, item := range products {
+			tempObjProduct[item.ID.String()] = item
+		}
+
+		for _, item := range carts {
+			responseData = append(responseData, ResponseCart{
+				ID:       item.ID,
+				Quantity: item.Quantity,
+				Product:  tempObjProduct[item.ProductID.String()],
+			})
+		}
+	} else {
+		responseData = make([]ResponseCart, 0)
+
 	}
 
 	return c.Status(200).JSON(fiber.Map{

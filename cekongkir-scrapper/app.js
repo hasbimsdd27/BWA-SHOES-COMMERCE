@@ -1,13 +1,29 @@
 const express = require("express");
 const { GetQueryLocation, GetDataOngkir } = require("./libs/scrapper");
 const cors = require("cors");
+const responseTime = require("response-time");
 
 const app = express();
 
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
-
+app.use(
+  responseTime((req, res, time) => {
+    const Log = [
+      new Date().toString().split(" ")[4],
+      res.statusCode,
+      (time > 1000 ? time / 1000 : time).toLocaleString("id-ID", {
+        maximumFractionDigits: 2,
+        minimumFractionDigits: 2,
+      }) + (time > 1000 ? " s" : " ms"),
+      req.headers["x-forwarded-for"] || req.socket.remoteAddress,
+      req.method,
+      req.url,
+    ].join(" | ");
+    console.log(Log);
+  })
+);
 const PORT = process.env.PORT || 5001;
 
 app.get("/search", async (req, res) => {
