@@ -1,8 +1,7 @@
 import { AnyAction } from "redux";
-import { RESET_AUTH, SET_AUTH } from "../type/auth";
 import { RESET_CART, SET_CART } from "../type/cart";
 
-interface ICartData {
+export interface ICartData {
   id: string;
   product: {
     id: string;

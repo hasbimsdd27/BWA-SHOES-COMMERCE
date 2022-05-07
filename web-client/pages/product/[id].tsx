@@ -356,6 +356,7 @@ const Products: NextPage<IParamsDetail> = ({ data, error }) => {
                       onClick={() => {
                         HandlePostUpdate(1, data.product.id);
                       }}
+                      loading={loadingCart}
                     >
                       Add to cart
                     </Button>
@@ -363,7 +364,6 @@ const Products: NextPage<IParamsDetail> = ({ data, error }) => {
                   <div className="flex flex-1 items-center justify-start px-2">
                     <Button
                       className="px-2 py-4 bg-app-primary rounded-md"
-                      onClick={() => {}}
                       type={"button"}
                     >
                       Buy Now

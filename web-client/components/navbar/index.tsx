@@ -99,7 +99,7 @@ const Navbar = () => {
             <Dropdown
               renderLabel={<SVGAssets.CartIcon className="h-6 w-6" />}
               id="cart-button"
-              width="225px"
+              width="250px"
             >
               <div className="px-2">
                 {cartData.data.length === 0 ? (
@@ -113,7 +113,7 @@ const Navbar = () => {
                       style={{ maxHeight: "180px" }}
                     >
                       {cartData.data.map((item, index) => (
-                        <div key={index} className="flex flex-row my-2">
+                        <div key={index} className="flex flex-row my-4">
                           <div
                             className="w-16 h-16 rounded-md mr-2"
                             style={{
@@ -137,7 +137,7 @@ const Navbar = () => {
                       ))}
                     </div>
 
-                    <div className="mb-2">
+                    <div className="my-2 shadow">
                       <button
                         className="w-full bg-app-primary text-white rounded-md py-2 cursor-pointer"
                         onClick={() => {

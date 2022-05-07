@@ -1,10 +1,12 @@
 import Head from "next/head";
-import React, { useRef, useState } from "react";
-import { useSelector } from "react-redux";
+import { useRouter } from "next/router";
+import React, { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import Swal from "sweetalert2";
 import Button from "../components/button";
 import CustomCheckbox from "../components/customCheckbox";
 import Layout from "../components/layout";
+import { SetCheckoutData } from "../redux/action/checkout";
 import { IRootReducer } from "../redux/reducer/rootReducer";
 import { getCartData } from "../service/cart";
 import { getCookie } from "../utils/cookieHandler";
@@ -13,6 +15,8 @@ function Checkout() {
   const userCart = useSelector((reducer: IRootReducer) => reducer.CartReducer);
   const [selected, setSelected] = useState<string[]>([]);
   const [deleteLoading, setDeleteLoading] = useState<boolean>(false);
+  const router = useRouter();
+  const dispatch = useDispatch();
 
   const ToggleSelected = (id: string) => {
     if (selected.includes(id)) {
@@ -190,9 +194,23 @@ function Checkout() {
                 >
                   <span>Delete ({selected.length})</span>
                 </Button>
-                <button className="w-full bg-app-primary py-2 rounded-md cursor-pointer font-bold sm:ml-0 md:ml-1">
+                <Button
+                  className="w-full bg-app-primary py-2 rounded-md cursor-pointer font-bold sm:ml-0 md:ml-1"
+                  type="button"
+                  onClick={() => {
+                    dispatch(
+                      SetCheckoutData({
+                        items: userCart.data.filter((item) =>
+                          selected.includes(item.id)
+                        ),
+                      }) as any
+                    );
+
+                    router.push("/checkout");
+                  }}
+                >
                   <span> Checkout ({selected.length})</span>
-                </button>
+                </Button>
               </div>
             </div>
           </div>

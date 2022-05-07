@@ -70,4 +70,14 @@ function Button({
   );
 }
 
+Button.defaultProps = {
+  className: "",
+  onClick: () => {},
+  loading: false,
+  disabled: false,
+  children: <></>,
+  id: "",
+  type: "button",
+};
+
 export default Button;
