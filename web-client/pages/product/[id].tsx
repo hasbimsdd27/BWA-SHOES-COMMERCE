@@ -272,9 +272,21 @@ const Products: NextPage<IParamsDetail> = ({ data, error }) => {
                     </div>
                   </div>
                 </div>
-                <div className="mb-16">
+                <div className="mb-8">
                   <div className="text-xl font-bold mb-2">Description</div>
                   <p>{data.product.description}</p>
+                </div>
+                <div className="mb-8">
+                  <div className="flex flex-row">
+                    <div className="flex flex-1 flex-col">
+                      <div className="text-xl font-bold mb-2">Weight</div>
+                      <div>{data.product.weight} kg</div>
+                    </div>
+                    <div className="flex flex-1 flex-col">
+                      <div className="text-xl font-bold mb-2">Tags</div>
+                      <div>{data.product.tags}</div>
+                    </div>
+                  </div>
                 </div>
                 <div className="mb-8">
                   <div
