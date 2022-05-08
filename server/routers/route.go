@@ -40,4 +40,6 @@ func SetupRouter(app *fiber.App) {
 	api.Get("/ongkir/search", middlewares.MiddlewareUser, controllers.QueryArea)
 	api.Post("/ongkir/cost", middlewares.MiddlewareUser, controllers.GetOngkir)
 
+	api.Post("/transaction", middlewares.MiddlewareUser, controllers.CreateTransaction)
+
 }
