@@ -49,7 +49,7 @@ func ConnectDB() {
 		panic(err.Error())
 	}
 
-	DB.AutoMigrate(
+	DB.Debug().AutoMigrate(
 		&models.ProductCategories{},
 		&models.Users{},
 		&models.Products{},

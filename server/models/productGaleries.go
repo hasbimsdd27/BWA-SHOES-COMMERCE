@@ -9,7 +9,7 @@ import (
 
 type ProductGaleries struct {
 	ID        uuid.UUID `gorm:"type:VARCHAR(255);primary_key" json:"id"`
-	ProductId uuid.UUID `json:"product_id" gorm:"type:uuid" `
+	ProductId uuid.UUID `json:"product_id" gorm:"type:VARCHAR(255)" `
 	Url       string    `json:"url"`
 	CreatedAt time.Time
 	UpdatedAt time.Time

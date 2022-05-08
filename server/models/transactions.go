@@ -9,9 +9,11 @@ import (
 
 type Transactions struct {
 	ID              uuid.UUID `gorm:"type:VARCHAR(255);primary_key" json:"id"`
-	UserId          int       `json:"user_id"`
-	AddressArea     string    `json:"address_area"`
-	Address         string    `json:"address" gorm:"type:text"`
+	UserId          uuid.UUID `json:"user_id" gorm:"type:VARCHAR(255)"`
+	AddressName     string    `json:"address_name"`
+	AddressType     string    `json:"address_type"`
+	AddressID       int       `json:"address_id"`
+	CompleteAddress string    `json:"complete_address" gorm:"type:text"`
 	TotalPrice      float32   `json:"total_price" gorm:"default:0"`
 	ShippingPrice   float32   `json:"shipping_price" gorm:"default:0"`
 	ShippingCourier string    `json:"shipping_courier"`
