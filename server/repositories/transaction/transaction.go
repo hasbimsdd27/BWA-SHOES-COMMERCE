@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
+	"log"
 	"net/http"
 	"server/libs"
 	"server/models"
@@ -21,6 +22,15 @@ type PayloadTransaction struct {
 	ServiceCode string   `json:"service_code"`
 }
 
+type BodyAPIMidtransGatewayData struct {
+	Token       string `json:"token"`
+	RedirectUrl string `json:"redirect_url"`
+}
+type BodyAPIMidtransGateway struct {
+	Status string                     `json:"status"`
+	Data   BodyAPIMidtransGatewayData `json:"data"`
+}
+
 func CreateTransaction(c *fiber.Ctx) error {
 	var payload PayloadTransaction
 	var err error
@@ -33,6 +43,7 @@ func CreateTransaction(c *fiber.Ctx) error {
 	var CourierData ongkirRepositories.CourirerRes
 	var TransactionItems []models.TransactionItems
 	var Carts []models.UserCart
+	var BodyMidtransGateway BodyAPIMidtransGateway
 
 	objProducts := make(map[string]models.Products)
 	totalPrice := 0
@@ -195,8 +206,58 @@ func CreateTransaction(c *fiber.Ctx) error {
 		})
 	}
 
-	return c.Status(200).JSON(fiber.Map{
-		"status": "success",
-		"data":   Transaction,
-	})
+	baseUrlMidtrans := utils.GetENV("MIDTRANS_HOST")
+	var jsonStrPayment = []byte(fmt.Sprintf(`
+	{
+		"webhook_url": "%s",
+		"payload": {
+		  "transaction_details": {
+			"order_id": "%s",
+			"gross_amount": %d
+		  },
+		  "credit_card": {
+			"secure": true
+		  },
+		  "customer_details": {
+			"first_name": "%s",
+			"last_name": "%s",
+			"email": "%s",
+			"phone": "%s"
+		  }
+		}
+	  }
+	`, utils.GetENV("SERVER_HOST")+"/api/webhook", Transaction.ID.String(), totalPrice, strings.Split(User.Name, " ")[0], strings.Split(User.Name, " ")[1], User.Email, User.Phone))
+
+	reqPayment, err := http.NewRequest("POST", baseUrlMidtrans+"/create", bytes.NewBuffer(jsonStrPayment))
+	if err != nil {
+		return c.Status(500).JSON(fiber.Map{
+			"status":  "error",
+			"message": err.Error(),
+		})
+	}
+
+	reqPayment.Header.Set("Content-Type", "application/json")
+
+	clientPayment := &http.Client{}
+	resPayment, err := clientPayment.Do(reqPayment)
+	if err != nil {
+
+		return c.Status(500).JSON(fiber.Map{
+			"status":  "error",
+			"message": err.Error(),
+		})
+	}
+
+	defer resPayment.Body.Close()
+
+	if err = json.NewDecoder(resPayment.Body).Decode(&BodyMidtransGateway); err != nil {
+		return c.Status(500).JSON(fiber.Map{
+			"status":  "error",
+			"message": err.Error(),
+		})
+
+	}
+	log.Println(BodyMidtransGateway)
+
+	return c.Status(resPayment.StatusCode).JSON(BodyMidtransGateway)
 }
