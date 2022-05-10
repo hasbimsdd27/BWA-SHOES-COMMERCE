@@ -4,7 +4,6 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
-	"log"
 	"net/http"
 	"server/libs"
 	"server/models"
@@ -257,7 +256,7 @@ func CreateTransaction(c *fiber.Ctx) error {
 		})
 
 	}
-	log.Println(BodyMidtransGateway)
+	db.Delete(&Carts)
 
 	return c.Status(resPayment.StatusCode).JSON(BodyMidtransGateway)
 }

@@ -130,12 +130,13 @@ app.post("/webhook", async (req: Request, res: Response) => {
       body: JSON.stringify(body),
     });
 
-    const resBody = await resWebhook.text();
+    const resBody = await resWebhook.json();
+    const textBody = JSON.stringify(body);
     await db.query(
       `UPDATE payment_request_data SET is_receive_webhook = true, client_webhook_status_code = ${
         resWebhook.status
-      },client_webhook_status_response = "${resBody}", client_webhook_status_response = "${resBody}", midtrans_webhook_payload = '${JSON.stringify(
-        body
+      }, midtrans_webhook_payload = '${textBody}', client_webhook_status_response = '${JSON.stringify(
+        resBody
       )}' WHERE id = "${body["order_id"]}" `
     );
 

@@ -42,4 +42,6 @@ func SetupRouter(app *fiber.App) {
 
 	api.Post("/transaction", middlewares.MiddlewareUser, controllers.CreateTransaction)
 
+	api.Post("/webhook", controllers.WebhookController)
+
 }

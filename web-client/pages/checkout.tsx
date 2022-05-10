@@ -1,13 +1,16 @@
 import { NextPage } from "next";
 import Head from "next/head";
+import { useRouter } from "next/router";
 import React, { useCallback, useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import Swal from "sweetalert2";
+import Button from "../components/button";
 import Layout from "../components/layout";
 import { IRootReducer } from "../redux/reducer/rootReducer";
 import { getCookie } from "../utils/cookieHandler";
 
 const Checkout: NextPage = () => {
+  const router = useRouter();
   const [shipping, setShipping] = useState<{
     weight: string;
     from: string;
@@ -28,6 +31,7 @@ const Checkout: NextPage = () => {
     courrier: [],
   });
 
+  const [loadingSubmit, setLoadingSubmit] = useState<boolean>(false);
   const [selectedCourier, setSelectedCourier] = useState<number>(-1);
 
   const CheckoutData = useSelector(
@@ -90,12 +94,62 @@ const Checkout: NextPage = () => {
     [CheckoutData]
   );
 
+  const HandleCreateTransaction = async () => {
+    try {
+      setLoadingSubmit(true);
+
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/transaction`,
+        {
+          method: "POST",
+          headers: {
+            "Content-type": "application/json;charset=UTF-8",
+            Authorization: getCookie("access_token"),
+          },
+          body: JSON.stringify({
+            cart_ids: CheckoutData.items.map((item) => item.id),
+            courier_name: shipping.courrier[selectedCourier].nama,
+            service_code: shipping.courrier[selectedCourier].kode_layanan,
+          }),
+        }
+      );
+      if (res.status >= 400) {
+        const json = await res.json();
+        Swal.fire({
+          icon: "error",
+          title: "Oops...",
+          text: json.message,
+        });
+        setLoadingSubmit(false);
+      } else {
+        const json = await res.json();
+        window.open(json.data.redirect_url);
+        router.push("/");
+      }
+      setLoadingSubmit(false);
+    } catch (error) {
+      if (error instanceof Error) {
+        Swal.fire({
+          icon: "error",
+          title: "Oops...",
+          text: error.message,
+        });
+      }
+      setLoadingSubmit(false);
+    }
+  };
+
   useEffect(() => {
     HandleCheckOngkir(
       userData.UserAddress.address_id,
       userData.UserAddress.address_type
     );
   }, [userData]);
+
+  const totalPrice = CheckoutData.items.reduce(
+    (total, item) => (total += item.product.price * item.quantity),
+    0
+  );
 
   return (
     <>
@@ -199,6 +253,30 @@ const Checkout: NextPage = () => {
                       </div>
                     ))}
               </div>
+            </div>
+            <div className="relative">
+              {selectedCourier > -1 && (
+                <div className="sticky bottom-0">
+                  <Button
+                    className="w-full py-2 bg-app-primary mt-2"
+                    loading={loadingSubmit}
+                    onClick={() => HandleCreateTransaction()}
+                  >
+                    <>
+                      Checkout (
+                      {(
+                        totalPrice + shipping.courrier[selectedCourier].harga
+                      ).toLocaleString("id-ID", {
+                        style: "currency",
+                        currency: "IDR",
+                        maximumFractionDigits: 2,
+                        minimumFractionDigits: 2,
+                      })}
+                      )
+                    </>
+                  </Button>
+                </div>
+              )}
             </div>
           </div>
         </div>
