@@ -50,7 +50,13 @@ const CompleteAddress: NextPage<IPropsCompleteAddress> = ({
       setLoadingQuery(true);
       setAddressesList([]);
       const response = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/ongkir/search?location=${name}`
+        `${process.env.NEXT_PUBLIC_API_URL}/ongkir/search?location=${name}`,
+        {
+          method: "GET",
+          headers: {
+            Authorization: getCookie("access_token"),
+          },
+        }
       );
       const data = await response.json();
       if (data.status === "success") {

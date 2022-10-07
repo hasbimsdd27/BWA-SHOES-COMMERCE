@@ -13,9 +13,9 @@ func SetupRouter(app *fiber.App) {
 	api.Get("/products/landing", controllers.GetCustomProduct)
 	api.Get("/products", controllers.GetAllProducts)
 	api.Get("/product/:id", controllers.GetDetailProduct)
-	api.Post("/product", middlewares.IsAdmin, controllers.CreateProduct)
-	api.Put("/product/:id", middlewares.IsAdmin, controllers.UpdateProduct)
-	api.Delete("/product/:id", middlewares.IsAdmin, controllers.DeleteProduct)
+	api.Post("/product", middlewares.MiddlewareUser, middlewares.IsAdmin, controllers.CreateProduct)
+	api.Put("/product/:id", middlewares.MiddlewareUser, middlewares.IsAdmin, controllers.UpdateProduct)
+	api.Delete("/product/:id", middlewares.MiddlewareUser, middlewares.IsAdmin, controllers.DeleteProduct)
 
 	api.Get("/categories", controllers.GetAllCategory)
 	api.Get("/category/:id", middlewares.MiddlewareUser, controllers.GetDetailCategory)

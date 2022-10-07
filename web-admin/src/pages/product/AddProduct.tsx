@@ -125,7 +125,7 @@ function AddProduct() {
         tags: (e.target as any)["product_tags"]?.value,
         category_id: (e.target as any)["product_category"]?.value,
         galeries: imageLink,
-        weight: (e.target as any)["product_weight"]?.value,
+        weight: Number((e.target as any)["product_weight"]?.value),
       };
       let response: any;
       if (!!params.id) {

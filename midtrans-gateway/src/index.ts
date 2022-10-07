@@ -65,6 +65,8 @@ app.post("/create", async (req: Request, res: Response) => {
       }
     );
 
+    console.log(resultCurl);
+
     return res.status(200).json({
       status: "success",
       data: await resultCurl.json(),

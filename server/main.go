@@ -22,5 +22,5 @@ func main() {
 	app.Static("/assets", "./assets")
 	routers.SetupRouter(app)
 
-	log.Fatal(app.Listen(":" + PORT))
+	log.Fatal(app.Listen("127.0.0.1:" + PORT))
 }
